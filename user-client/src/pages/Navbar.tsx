@@ -18,19 +18,19 @@ const Navbar = () => {
 
     return (
         <>
-            <div className="navbar px-5 py-2 flex justify-between">
-                <h1 className="text-2xl cursor-pointer flex items-center"><span><CiHome /></span>Blog API</h1>
+            <div className="navbar px-5 py-4 flex justify-between shadow">
+                <h1 className="text-3xl cursor-pointer flex items-center font-semibold"><span><CiHome /></span>Blog API</h1>
                 <div className="flex items-center gap-4">
                     <button className={`cursor-pointer transition-transform duration-300 ${rotate ? "rotate-180" : ""}`} onClick={toogleDarkMode}>  {darkMode === "light" ? <MdOutlineDarkMode className="text-2xl" /> : <MdOutlineLightMode className="text-2xl" />
                     }</button>
 
                     <Link
                         to="/login"
-                        className="border px-4 rounded"
+                        className="border border-gray-400 px-4 py-1.5 rounded-md hover:bg-green-500 hover:outline-none hover:border-gray-50 hover:text-white transition-all duration-300 ease-in-out"
                     > Login</Link>
                     <Link
-                        to="/login"
-                        className="border px-4 rounded"
+                        to="/signup"
+                        className="border border-gray-400 px-4 py-1.5 rounded-md hover:bg-blue-500 hover:outline-none hover:border-gray-50 hover:text-white transition-all duration-300 ease-in-out"
                     > Sign Up</Link>
                 </div>
             </div >
