@@ -27,7 +27,7 @@ const Login = () => {
                         </label>
                     )
                 })}
-                <p className="text-sm text-gray-600 mt-2">Doesn't have an account? <Link className="text-blue-600 hover:text-blue-700 hover:underline transition-colors" to="/signup">Sign Up</Link></p>
+                <p className="text-sm text-gray-600 mt-2 mb-2">Doesn't have an account? <Link className="text-blue-600 hover:text-blue-700 hover:underline transition-colors" to="/signup">Sign Up</Link></p>
                 <button className="border py-2 border-gray-400 cursor-pointer rounded hover:bg-blue-500 hover:border-0 hover:text-white transition-colors duration-500 ease-in-out">Login</button>
             </form>
         </div>

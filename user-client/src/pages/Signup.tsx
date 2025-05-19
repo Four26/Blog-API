@@ -4,6 +4,11 @@ import { usePasswordToggle } from "../hooks/togglePassword";
 const Signup = () => {
     const { showPassword, handleShowPassword } = usePasswordToggle();
 
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log("clicked")
+    }
+
     const inputElement: { type: string, name: string, placeholder: string }[] = [
         { type: "text", name: "firstname", placeholder: "First Name" },
         { type: "text", name: "lastname", placeholder: "Last Name" },
@@ -17,7 +22,8 @@ const Signup = () => {
         <div className="flex flex-col h-screen justify-center items-center bg-gray-50">
             <form
                 className="flex flex-col border border-gray-200 p-5 rounded-lg shadow-sm bg-white "
-                action="">
+                onSubmit={handleSubmit}
+            >
                 <h1 className="text-center text-2xl text-gray-800 font-semibold mb-4">Signup</h1>
                 {inputElement.map(({ type, name, placeholder }) => {
                     return (
@@ -37,7 +43,7 @@ const Signup = () => {
                         </label>
                     )
                 })}
-                <p className="text-sm text-gray-600 mt-2">Already have an account? <Link className="text-blue-600 hover:text-blue-700 hover:underline transition-colors" to="/login">Login</Link></p>
+                <p className="text-sm text-gray-600 mt-2 mb-2">Already have an account? <Link className="text-blue-600 hover:text-blue-700 hover:underline transition-colors" to="/login">Login</Link></p>
                 <button className="border py-2 border-gray-400 cursor-pointer rounded hover:bg-blue-500 hover:border-0 hover:text-white transition-colors duration-500 ease-in-out">Sign Up</button>
             </form>
         </div>
