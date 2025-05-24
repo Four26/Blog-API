@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model category {
+  id    Int     @id @default(autoincrement())
+  name  String  @db.VarChar(255)
+  posts posts[]
+}
+
+model comments {
+  id         Int       @id @default(autoincrement())
+  comments   String?
+  post_id    Int
+  author_id  Int
+  parent_id  Int?
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  users      users     @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  posts      posts     @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model post_like {
+  id         Int       @id @default(autoincrement())
+  post_id    Int
+  user_id    Int
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  posts      posts     @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users      users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([post_id, user_id])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model posts {
+  id          Int         @id @default(autoincrement())
+  title       String      @db.VarChar(255)
+  content     String
+  author_id   Int
+  category_id Int?
+  status      String      @db.VarChar(255)
+  post_image  Bytes?
+  created_at  DateTime?   @default(now()) @db.Timestamp(6)
+  comments    comments[]
+  post_like   post_like[]
+  users       users       @relation(fields: [author_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  category    category?   @relation(fields: [category_id], references: [id], onUpdate: NoAction)
+}
+
+model session {
+  id         Int       @id @default(autoincrement())
+  session    Json      @db.Json
+  expires_at DateTime? @db.Timestamp(6)
+}
+
+model users {
+  id         Int         @id @default(autoincrement())
+  email      String      @unique @db.VarChar(255)
+  username   String      @unique @db.VarChar(255)
+  firstname  String      @db.VarChar(255)
+  lastname   String      @db.VarChar(255)
+  password   String      @db.VarChar(512)
+  created_at DateTime?   @default(now()) @db.Timestamp(6)
+  admin      Boolean?    @default(false)
+  comments   comments[]
+  post_like  post_like[]
+  posts      posts[]
+}
