@@ -12,10 +12,8 @@ export interface UserData {
 
 export interface SignUpState {
     formData: UserData
-    isLoggedIn: boolean
-    loading: boolean,
-    signUpError: string | null
-    error: string | null
+    loading: boolean
+    signUpError: { field: string, message: string }[] | null
 }
 
 const initialState: SignUpState = {
@@ -27,13 +25,11 @@ const initialState: SignUpState = {
         password: "",
         confirmPassword: ""
     },
-    isLoggedIn: false,
     loading: false,
     signUpError: null,
-    error: null
 }
 
-export const signUp = createAsyncThunk("auth/signUp", async (formData: SignUpState["formData"], thunkAPI) => {
+export const signUp = createAsyncThunk("auth/signUp", async (formData: UserData, thunkAPI) => {
     try {
         const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/signUp`, {
             method: "POST",
@@ -59,41 +55,28 @@ export const signUpSlice = createSlice({
         setField: (state, action: PayloadAction<{ name: keyof UserData; value: string }>) => {
             state.formData[action.payload.name] = action.payload.value;
         },
-        clearSignUpError: (state) => {
-            state.signUpError = null
-        },
         logOut: (state, action) => {
             state.formData = action.payload
-            state.isLoggedIn = false;
             state.loading = false;
-            state.error = null;
         }
     },
     extraReducers: (builder) => {
         builder
             .addCase(signUp.pending, (state) => {
-                state.formData = initialState.formData
-                state.isLoggedIn = false;
                 state.loading = true;
                 state.signUpError = null;
-                state.error = null;
             })
             .addCase(signUp.fulfilled, (state, action) => {
                 state.formData = action.payload;
-                state.isLoggedIn = true;
                 state.loading = false;
                 state.signUpError = null;
-                state.error = null;
             })
             .addCase(signUp.rejected, (state, action) => {
-                state.formData = initialState.formData
-                state.isLoggedIn = false;
                 state.loading = false;
-                state.signUpError = action.payload as string;
-                state.error = action.payload as string;
+                state.signUpError = action.payload as { field: string, message: string }[]
             })
     }
 })
 
-export const { setField, clearSignUpError, logOut } = signUpSlice.actions;
+export const { setField, logOut } = signUpSlice.actions;
 export default signUpSlice.reducer;

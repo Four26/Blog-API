@@ -10,11 +10,11 @@ const prisma = new PrismaClient();
 export const signUp = expressAsyncHandler(async (req: Request, res: Response) => {
 
     const validateSignUp = z.object({
-        firstname: z.string().min(2, "First name must be atleast 2 characters long!").nonempty("First name is required!"),
-        lastname: z.string().min(2, "Lastname must be atleast 2 characters long!").nonempty("Last name is required!"),
-        username: z.string().min(3, "Username must be atleast 3 characters long!").nonempty("Username is required!"),
-        email: z.string().email("Invalid email!").nonempty("Email is required!"),
-        password: z.string().min(8, "Password must be atleast 8 characters long!").nonempty("Password is required!"),
+        firstname: z.string().min(2, "First name must be atleast 2 characters long!"),
+        lastname: z.string().min(2, "Lastname must be atleast 2 characters long!"),
+        username: z.string().min(3, "Username must be atleast 3 characters long!"),
+        email: z.string().email("Invalid email!"),
+        password: z.string().min(8, "Password must be atleast 8 characters long!"),
         confirmPassword: z.string().nonempty("Confirm password is required!")
     }).refine(data => data.password === data.confirmPassword, {
         message: "Password doesn't match!",
@@ -39,7 +39,17 @@ export const signUp = expressAsyncHandler(async (req: Request, res: Response) =>
         });
 
         if (checkDuplicateUsername || checkDuplicateEmail) {
-            res.status(409).json({ message: `${checkDuplicateUsername ? "Username" : "Email"} already exists!` });
+            const errors = [];
+
+            if (checkDuplicateUsername) {
+                errors.push({ field: "username", message: "Username already exists!" });
+            }
+
+            if (checkDuplicateEmail) {
+                errors.push({ field: "email", message: "Email already exists!" });
+            }
+
+            res.status(409).json({ message: errors });
             return;
         } else {
             const createUser = await prisma.users.create({
@@ -59,14 +69,17 @@ export const signUp = expressAsyncHandler(async (req: Request, res: Response) =>
         }
     } catch (error) {
         if (error instanceof z.ZodError) {
-            const errMessage = error.errors[0].message;
-            console.log(errMessage);
-            res.status(400).json({ message: errMessage });
+            const errorMessage = error.errors.map((err) => ({
+                field: err.path.join("."),
+                message: err.message
+            }));
+            res.status(400).json({ message: errorMessage });
             return;
         } else {
+            console.log(error)
             res.status(500).json({ message: "Internal server error!" });
             return;
         }
     }
 
-})
+});

@@ -52,9 +52,9 @@ model posts {
 }
 
 model session {
-  id         Int       @id @default(autoincrement())
-  session    Json      @db.Json
-  expires_at DateTime? @db.Timestamp(6)
+  sid         String    @id @db.VarChar
+  sess        Json      @db.Json
+  expire      DateTime? @db.Timestamp(6)
 }
 
 model users {

@@ -1,11 +1,15 @@
 import { CiHome } from "react-icons/ci";
 import { Link } from "react-router-dom";
+import { IoIosCreate } from "react-icons/io";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
 import { useState, useEffect } from "react";
+import { useAppSelector } from "../redux/hooks/hooks";
 const Navbar = () => {
     const [darkMode, setDarkMode] = useState<string>("light");
     const [rotate, setRotate] = useState<boolean>(false);
 
+    const user = useAppSelector(state => state.logIn.formData);
+    console.log(user);
 
     const toogleDarkMode = () => {
         setRotate(!rotate);
@@ -33,6 +37,12 @@ const Navbar = () => {
                         className="border border-gray-400 px-4 py-1.5 rounded-md hover:bg-blue-500 hover:outline-none hover:border-gray-50 hover:text-white transition-all duration-300 ease-in-out"
                     > Sign Up</Link>
                 </div>
+
+                <div>
+                    <div>{user.username}</div>
+                    <button> <span><IoIosCreate /></span> Create Blog</button>
+                </div>
+
             </div >
         </>
     )

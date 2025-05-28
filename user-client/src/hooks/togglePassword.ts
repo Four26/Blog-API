@@ -7,6 +7,7 @@ export const usePasswordToggle = () => {
     });
 
     const handleShowPassword = (name: string) => {
+        console.log('rendered')
         setShowPassword((prev) => ({
             ...prev,
             [name]: !prev[name]

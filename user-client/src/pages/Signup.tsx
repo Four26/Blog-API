@@ -1,36 +1,40 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
 import { usePasswordToggle } from "../hooks/togglePassword";
-import { clearSignUpError, setField, signUp, UserData } from "../redux/slices/signUpSlice";
+import { setField, signUp, UserData } from "../redux/slices/signUpSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
-import { useEffect } from "react";
 
 const Signup = () => {
 
     const { showPassword, handleShowPassword } = usePasswordToggle();
-
     const formData = useAppSelector((state) => state.signUp.formData);
     const signUpError = useAppSelector((state) => state.signUp.signUpError);
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+
+    const getFieldError = (fieldName: string) => {
+        if (!Array.isArray(signUpError)) return [];
+
+        return signUpError.filter(error => error.field === fieldName).map(error => error.message);
+    }
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(signUp(formData));
+        const result = await dispatch(signUp(formData));
+
+        if (signUp.fulfilled.match(result)) {
+            navigate("/login");
+        }
+
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         dispatch(setField({ name: name as keyof UserData, value }));
     };
-
-    useEffect(() => {
-        if (signUpError) {
-            const timeOut = setTimeout(() => {
-                dispatch(clearSignUpError())
-            }, 2000);
-            return () => clearTimeout(timeOut);
-        }
-    }, [dispatch, signUpError]);
 
     const inputElement: { type: string, name: keyof UserData, placeholder: string }[] = [
         { type: "text", name: "firstname", placeholder: "First Name" },
@@ -43,31 +47,45 @@ const Signup = () => {
 
     return (
         <div className="flex flex-col h-screen justify-center items-center bg-gray-50">
-            <div className="p-4">
-                {signUpError && (<div className=" text-red-500 font-semibold">{signUpError}</div>)
-                }
-            </div>
             <form
-                className="flex flex-col border border-gray-200 p-5 rounded-lg shadow-sm bg-white "
+                className="flex flex-col border border-gray-200 p-5 rounded-lg shadow-sm bg-white w-full max-w-sm"
                 onSubmit={(e) => handleSubmit(e)}
             >
                 <h1 className="text-center text-2xl text-gray-800 font-semibold mb-4">Signup</h1>
                 {inputElement.map(({ type, name, placeholder }) => {
+                    const errors = getFieldError(name);
+                    const hasErrors = errors.length > 0;
                     return (
                         <label
                             htmlFor={name}
                             key={name}
-                            className="relative block"
+                            className="block text-sm"
                         >
                             {placeholder}:
-                            <input
-                                key={name}
-                                type={type === "password" ? (showPassword[name] ? "text" : "password") : type}
-                                name={name}
-                                onChange={e => handleChange(e)}
-                                className="border border-gray-400 rounded w-full my-1 px-3 py-1 outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all"
-                            />
-                            {(name === "password" || name === "confirmPassword") && (<span onClick={() => handleShowPassword(name)}>{showPassword[name] ? <LuEye className="absolute right-2 top-1/2 translate-y-1" /> : <LuEyeClosed className="absolute right-2 top-1/2 translate-y-1" />}</span>)}
+                            <div className="relative">
+                                <input
+                                    key={name}
+                                    type={type === "password" ? (showPassword[name] ? "text" : "password") : type}
+                                    name={name}
+                                    onChange={e => handleChange(e)}
+                                    className="border border-gray-400 rounded w-full my-1 px-3 py-1 outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all"
+                                />
+                                {(name === "password" || name === "confirmPassword") && (
+                                    <span
+                                        onClick={() => handleShowPassword(name)}
+                                        className="absolute right-3 top-1/2 -translate-y-1"
+                                    >{showPassword[name] ?
+                                        <LuEye /> :
+                                        <LuEyeClosed />}
+                                    </span>)}
+                            </div>
+                            {hasErrors && (
+                                <div className="mt-1 mb-1 text-sm text-red-600">
+                                    {errors.map((error, index) => (
+                                        <p key={index}>{error}</p>
+                                    ))}
+                                </div>
+                            )}
                         </label>
                     )
                 })}

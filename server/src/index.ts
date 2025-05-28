@@ -1,7 +1,11 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import { pool } from "./db/db";
+import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
 import router from './router/router';
+import passport from "passport";
 import { errorHandler } from "./middleware/errorHandler";
 
 dotenv.config();
@@ -17,8 +21,26 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/", router);
 
+app.use(session({
+    store: new (connectPgSimple(session))({
+        pool,
+        tableName: "session",
+        pruneSessionInterval: 60
+    }),
+    secret: process.env.SESSION_SECRET ?? 'secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 24 * 60 * 60 * 1000,
+        httpOnly: true,
+    }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use("/", router);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
