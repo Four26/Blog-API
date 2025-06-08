@@ -12,7 +12,7 @@ export const signUp = expressAsyncHandler(async (req: Request, res: Response) =>
     const validateSignUp = z.object({
         firstname: z.string().min(2, "First name must be atleast 2 characters long!"),
         lastname: z.string().min(2, "Lastname must be atleast 2 characters long!"),
-        username: z.string().min(3, "Username must be atleast 3 characters long!"),
+        username: z.string().min(3, "Username must be atleast 3 characters long!").max(12, "Username must be less than 12 characters long!"),
         email: z.string().email("Invalid email!"),
         password: z.string().min(8, "Password must be atleast 8 characters long!"),
         confirmPassword: z.string().nonempty("Confirm password is required!")

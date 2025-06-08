@@ -2,12 +2,12 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
 import { usePasswordToggle } from "../hooks/togglePassword";
-import { logIn, setField, UserData } from "../redux/slices/logInSlice";
+import { logIn, setField, UserData } from "../redux/slices/authSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
 const Login = () => {
     const { showPassword, handleShowPassword } = usePasswordToggle();
-    const formData = useAppSelector((state) => state.logIn.formData);
-    const logInError = useAppSelector((state) => state.logIn.logInError);
+    const formData = useAppSelector((state) => state.auth.formData);
+    const logInError = useAppSelector((state) => state.auth.logInError);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ const Login = () => {
         const result = await dispatch(logIn(formData));
 
         if (logIn.fulfilled.match(result)) {
-            navigate("/");
+            navigate("/user");
         }
     }
 

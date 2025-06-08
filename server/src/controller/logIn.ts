@@ -32,7 +32,6 @@ passport.use(new LocalStrategy(async (username: string, password: string, done: 
 }));
 
 passport.serializeUser((user: any, done: any) => {
-    console.log(user);
     done(null, user.id);
 });
 passport.deserializeUser(async (id: number, done: any) => {
@@ -62,9 +61,7 @@ export const logIn = expressAsyncHandler((req: Request, res: Response) => {
             if (error) {
                 return res.status(500).json({ error: error.message });
             }
-            console.log('Session after login:', req.session);
-
-            return res.status(200).json({ message: 'Successfully logged in!', user: JSON.parse(JSON.stringify(user)), sessionID: req.sessionID });
+            return res.status(200).json({ message: 'Successfully logged in!', user: JSON.parse(JSON.stringify(user.username)), sessionID: req.sessionID });
         });
 
     })(req, res);
