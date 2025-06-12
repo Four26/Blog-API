@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks/hooks";
-import { BlogData, createPost, setField } from "../../../redux/slices/createPostSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks/hooks";
+import { BlogData, createPost, setField } from "../../redux/slices/createPostSlice";
 
 
-const Post = () => {
+const CreateBlog = () => {
 
     const [successMessage, setSuccessMessage] = useState<string | null>(null)
     const blogData = useAppSelector((state) => state.createPost.blogData);
@@ -124,4 +124,4 @@ const Post = () => {
     )
 }
 
-export default Post;
+export default CreateBlog;

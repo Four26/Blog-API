@@ -61,7 +61,7 @@ export const logIn = expressAsyncHandler((req: Request, res: Response) => {
             if (error) {
                 return res.status(500).json({ error: error.message });
             }
-            return res.status(200).json({ message: 'Successfully logged in!', user: JSON.parse(JSON.stringify(user.username)), sessionID: req.sessionID });
+            return res.status(200).json({ message: 'Successfully logged in!' });
         });
 
     })(req, res);

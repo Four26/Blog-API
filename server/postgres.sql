@@ -12,6 +12,7 @@ CREATE TABLE users (
 CREATE TABLE category(
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(255) NOT NULL
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE posts (
@@ -21,7 +22,6 @@ CREATE TABLE posts (
     author_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     category_id INTEGER REFERENCES category(id) ON DELETE SET NULL,
     status VARCHAR(255) NOT NULL CHECK(status IN('draft', 'published')),
-    post_image BYTEA,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -1,8 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface BlogData {
+export interface BlogData {
     title: string
-    image: File | null
     content: string
     category: string
     publish: boolean
@@ -16,9 +15,8 @@ interface PostState {
 const initialState: PostState = {
     blogData: {
         title: "",
-        image: null,
         content: "",
-        category: "",
+        category: "Technology",
         publish: false
     },
     error: ""
@@ -26,17 +24,11 @@ const initialState: PostState = {
 
 export const createPost = createAsyncThunk("createPost", async (blogData: BlogData, thunkAPI) => {
     try {
-        const formData = new FormData();
-        formData.append("title", blogData.title);
-        formData.append("content", blogData.content);
-        formData.append("category", blogData.category);
-        formData.append("publish", String(blogData.publish));
-        if (blogData.image instanceof File) formData.append("image", blogData.image)
-
         const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/createPost`, {
             method: "POST",
             credentials: "include",
-            body: formData
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(blogData)
         });
         const data = await response.json();
 
@@ -53,20 +45,25 @@ export const createPost = createAsyncThunk("createPost", async (blogData: BlogDa
 const createPostSlice = createSlice({
     name: "createPost",
     initialState,
-    reducers: {},
+    reducers: {
+        setField: (state, action: PayloadAction<{ name: keyof BlogData, value: string | File | null | boolean }>) => {
+            (state.blogData[action.payload.name] as string | File | null | boolean) = action.payload.value
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(createPost.pending, (state) => {
                 state.error = "";
             })
             .addCase(createPost.fulfilled, (state) => {
-                state.blogData = initialState.blogData
-                state.error = ""
+                state.blogData = initialState.blogData;
+                state.error = "";
             })
             .addCase(createPost.rejected, (state, action) => {
-                state.error = action.payload as string
+                state.error = action.payload as string;
             })
     }
 });
 
-export default createPostSlice;
+export const { setField } = createPostSlice.actions;
+export default createPostSlice.reducer;

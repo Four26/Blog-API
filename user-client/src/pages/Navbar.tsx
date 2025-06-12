@@ -1,4 +1,3 @@
-import { CiHome } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
 import { IoIosCreate } from "react-icons/io";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
@@ -6,12 +5,7 @@ import { FiLogOut } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
 import { logOut } from "../redux/slices/authSlice";
-
-interface UserData {
-    message: string
-    user: string
-    sessionId: string
-}
+import { CiHome } from "react-icons/ci";
 
 const Navbar = () => {
     const [darkMode, setDarkMode] = useState<string>("light");
@@ -19,7 +13,8 @@ const Navbar = () => {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const user = useAppSelector(state => state.auth.currentUser as UserData | null);
+    const user = useAppSelector(state => state.auth.currentUser);
+    console.log("User: ", user)
 
     const handleLogOut = async () => {
         const result = await dispatch(logOut());
@@ -43,7 +38,9 @@ const Navbar = () => {
     return (
         <>
             <div className="navbar px-5 py-4 flex justify-between shadow">
-                <h1 className="text-3xl cursor-pointer flex items-center font-semibold"><span><CiHome /></span>Blog API</h1>
+                <Link to="/user">
+                    <h1 className="text-3xl cursor-pointer flex items-center font-semibold"><span><CiHome /></span>Blog API</h1>
+                </Link>
                 <div className="flex items-center gap-4">
                     <button className={`cursor-pointer transition-transform duration-300 ${rotate ? "rotate-180" : ""}`} onClick={toogleDarkMode}>  {darkMode === "light" ? <MdOutlineDarkMode className="text-2xl" /> : <MdOutlineLightMode className="text-2xl" />
                     }</button>
@@ -63,8 +60,8 @@ const Navbar = () => {
 
                     {user && (
                         <div className="flex items-center justify-between gap-4">
-                            <button className=" cursor-pointer px-4 py-1.5 rounded-md text-white flex items-center gap-2 bg-blue-500 hover:bg-blue-700 transition-colors duration-200 ease-in-out"> <span><IoIosCreate className="text-sm" /></span> Create Blog</button>
-                            <div>{user?.user}</div>
+                            <Link to="/post" className=" cursor-pointer px-4 py-1.5 rounded-md text-white flex items-center gap-2 bg-blue-500 hover:bg-blue-700 transition-colors duration-200 ease-in-out"> <span><IoIosCreate className="text-sm" /></span> Create Blog</Link>
+                            <div>{user}</div>
                             <div
                                 className="relative group cursor-pointer">
                                 <FiLogOut

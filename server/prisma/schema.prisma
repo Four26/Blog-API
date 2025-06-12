@@ -8,9 +8,10 @@ datasource db {
 }
 
 model category {
-  id    Int     @id @default(autoincrement())
-  name  String  @db.VarChar(255)
-  posts posts[]
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(255)
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  posts      posts[]
 }
 
 model comments {
@@ -43,7 +44,6 @@ model posts {
   author_id   Int
   category_id Int?
   status      String      @db.VarChar(255)
-  post_image  Bytes?
   created_at  DateTime?   @default(now()) @db.Timestamp(6)
   comments    comments[]
   post_like   post_like[]
@@ -52,9 +52,9 @@ model posts {
 }
 
 model session {
-  sid         String    @id @db.VarChar
-  sess        Json      @db.Json
-  expire      DateTime? @db.Timestamp(6)
+  sid    String    @id @db.VarChar
+  sess   Json      @db.Json
+  expire DateTime? @db.Timestamp(6)
 }
 
 model users {

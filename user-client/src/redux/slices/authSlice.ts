@@ -1,3 +1,4 @@
+import { URL } from "../../api/URL"
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 export interface UserData {
@@ -6,7 +7,7 @@ export interface UserData {
 }
 interface logInState {
     formData: UserData
-    currentUser: string | null
+    currentUser: string
     isLoading: boolean
     logInError: string | null
     isAuthenticated: boolean
@@ -17,7 +18,7 @@ const initialState: logInState = {
         username: "",
         password: ""
     },
-    currentUser: null,
+    currentUser: "",
     isLoading: false,
     logInError: null,
     isAuthenticated: false
@@ -25,7 +26,7 @@ const initialState: logInState = {
 
 export const logIn = createAsyncThunk("auth/logIn", async (formData: UserData, thunkAPI) => {
     try {
-        const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/logIn`, {
+        const response = await fetch(`${URL}/logIn`, {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json" },
@@ -45,7 +46,7 @@ export const logIn = createAsyncThunk("auth/logIn", async (formData: UserData, t
 
 export const logOut = createAsyncThunk("auth/logOut", async (_: void, thunkAPI) => {
     try {
-        const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/logOut`, {
+        const response = await fetch(`${URL}/logOut`, {
             method: "POST",
             credentials: "include"
         });
@@ -62,7 +63,7 @@ export const logOut = createAsyncThunk("auth/logOut", async (_: void, thunkAPI) 
 
 export const checkAuth = createAsyncThunk("auth/checkAuth", async (_: void, thunkAPI) => {
     try {
-        const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/checkAuth`, {
+        const response = await fetch(`${URL}/checkAuth`, {
             method: "GET",
             credentials: "include"
         });
@@ -91,7 +92,7 @@ const authSlice = createSlice({
             })
             .addCase(logIn.fulfilled, (state, action) => {
                 state.formData = initialState.formData;
-                state.currentUser = action.payload;
+                state.currentUser = action.payload.username;
                 state.isLoading = false;
                 state.logInError = null;
 
@@ -106,7 +107,7 @@ const authSlice = createSlice({
                 state.logInError = null;
             })
             .addCase(logOut.fulfilled, (state) => {
-                state.currentUser = null;
+                state.currentUser = "";
                 state.isLoading = false;
                 state.isAuthenticated = false;
 

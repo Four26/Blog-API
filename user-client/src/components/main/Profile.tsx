@@ -2,7 +2,6 @@ import dashboard from "../../public/images/dashboard.png";
 import posts from "../../public/images/posts.png";
 import comments from "../../public/images/comment.png";
 import category from "../../public/images/category.png";
-import tag from "../../public/images/tag.png";
 import analytics from "../../public/images/analytics.png";
 import user from "../../public/images/user.png";
 import settings from "../../public/images/settings.png";
@@ -24,7 +23,6 @@ const Profile = () => {
                 <ul className="flex flex-col justify-between items-center gap-4">
                     <li className="w-full">
                         <NavLink
-                            // className="p-2 flex items-center gap-3 cursor-pointer hover:bg-blue-300 transition-colors duration-200 ease-in-out"
                             className={navLinkStyle}
                             to="/user/dashboard"
                         ><span><img className="w-6" src={dashboard} alt={dashboard} /></span> Dashboard</NavLink>
@@ -33,7 +31,6 @@ const Profile = () => {
                         className="w-full">
                         <NavLink
                             onClick={clickRoute}
-                            // className="p-2 flex items-center gap-3 cursor-pointer hover:bg-blue-300 "
                             className={navLinkStyle}
                             to="/user/posts"
 
@@ -50,12 +47,6 @@ const Profile = () => {
                             className={navLinkStyle}
                             to="/user/categories"
                         ><span><img className="w-6" src={category} alt={category} /></span> Categories</NavLink>
-                    </li>
-                    <li className="w-full">
-                        <NavLink
-                            className={navLinkStyle}
-                            to="/user/tags"
-                        ><span><img className="w-6" src={tag} alt={tag} /></span> Tags</NavLink>
                     </li>
                     <li className="w-full">
                         <NavLink

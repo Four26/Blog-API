@@ -26,7 +26,8 @@ app.use(session({
     store: new (connectPgSimple(session))({
         pool,
         tableName: "session",
-        pruneSessionInterval: 60
+        pruneSessionInterval: 60 * 60,
+        ttl: 24 * 60 * 60
     }),
     secret: process.env.SESSION_SECRET ?? 'secret',
     resave: false,
