@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getPosts } from "../api/getPosts";
 import { useAppSelector } from "../redux/hooks/hooks";
+import { getUserPosts } from "../api/getUserPosts";
 
 interface User {
     firstname: string
@@ -24,9 +25,15 @@ interface Post {
     users: User
 }
 
+interface UserPosts {
+    status: string
+}
+
+
 const Main = () => {
 
     const [posts, setPosts] = useState<Post[]>();
+    const [userPosts, setUserPosts] = useState<UserPosts[] | null>(null)
     const user = useAppSelector((state) => state.auth.currentUser);
     const navigate = useNavigate();
 
@@ -35,7 +42,14 @@ const Main = () => {
             const posts = await getPosts();
             setPosts(posts);
         }
+
+        const fetchUserPosts = async () => {
+            const userPosts = await getUserPosts();
+            setUserPosts(userPosts);
+        }
+
         fetchPosts();
+        fetchUserPosts();
     }, []);
 
     const handleView = (blog: Post) => {
@@ -45,8 +59,8 @@ const Main = () => {
     return (
         <div className="flex-1 ">
             <div className="user-wrapper px-10 py-10">
-                <h2 className="text-3xl mt-5">Welcome, {user}!</h2>
-                <p className="text-gray-600 mb-10">You've published X posts and received Y comments.</p>
+                <h2 className="text-3xl mt-5 mb-2">Welcome, {user}!</h2>
+                <p className="text-gray-600 mb-10">You have {userPosts?.filter((post) => post.status === "published").length} published posts and {userPosts?.filter((post) => post.status === "draft").length} draft posts.</p>
                 <Link to="/myposts"
                     className="max-w-32 bg-transparent items-center justify-center flex border-2 border-sky-500 shadow-lg hover:bg-sky-500 text-sky-500 hover:text-white duration-300 cursor-pointer active:scale-[0.98]"
                 >

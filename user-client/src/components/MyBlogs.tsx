@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { userBlogs } from "../api/userBlogs";
 import { useNavigate } from "react-router-dom";
+import { deletePost } from "../api/deletePost";
 
 interface Blog {
     id: number
@@ -49,6 +50,12 @@ const MyBlogs = () => {
         navigate(`/views/${blog.id}`, { state: blog });
     }
 
+    const handleDelete = (id: number) => {
+        deletePost(id);
+        const updatedBlogs = blogs.filter((blog) => blog.id !== id);
+        setBlogs(updatedBlogs);
+    }
+
     const GridView = () => (
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-4 gap-4 ">
             {filteredBlogs.map((blog) => (
@@ -82,7 +89,9 @@ const MyBlogs = () => {
                         </div>
 
                         <div>
-                            <button className="cursor-pointer text-red-500 hover:text-red-700 text-sm px-2 transition-colors duration-200 ease-in-out">Delete</button>
+                            <button
+                                onClick={() => handleDelete(blog.id)}
+                                className="cursor-pointer text-red-500 hover:text-red-700 text-sm px-2 transition-colors duration-200 ease-in-out">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -94,7 +103,7 @@ const MyBlogs = () => {
     const TableView = () => (
         <div className="mt-10 overflow-y-scroll h-[300px]">
             <table className="w-full ">
-                <thead className="bg-gray-200">
+                <thead className="bg-gray-200 dark:bg-gray-600">
                     <tr>
                         <th className="px-6 py-3 text-left font-normal uppercase tracking-normal">Title</th>
                         <th className="px-6 py-3 text-left font-normal uppercase tracking-normal">Category</th>
@@ -105,37 +114,41 @@ const MyBlogs = () => {
                 </thead>
                 <tbody className="divide-y divide-gray-300">
                     {filteredBlogs.map((blog) => (
-                        <tr>
-                            <td className="px-6 py-1 text-sm">
+                        <tr
+                            key={blog.id}
+                        >
+                            <td className="px-6 py-2 text-sm">
                                 {blog.title}
                             </td>
-                            <td className="px-6 py-1 text-sm">
+                            <td className="px-6 py-2 text-sm">
                                 <span className="text-blue-500">
                                     {blog.category.name}
 
                                 </span>
                             </td>
-                            <td className="px-6 py-1 text-sm">
+                            <td className="px-6 py-2 text-sm">
                                 <span className={` ${blog.status === "published" ? "text-green-800 bg-green-300 rounded-full px-2 py-1 text-xs" : "text-yellow-800 bg-yellow-300 rounded-full px-2 py-1 text-xs"}`}>
                                     {blog.status === "published" ? "Published" : "Draft"}
                                 </span>
                             </td>
-                            <td className="px-6 py-1 text-sm">
+                            <td className="px-6 py-2 text-sm">
                                 {new Date(blog.created_at).toLocaleDateString("en-Us", {
                                     month: "long",
                                     day: "numeric",
                                     year: "numeric"
                                 })}
                             </td>
-                            <td className="px-6 py-1 text-sm">
+                            <td className="px-6 py-2 text-sm">
                                 <div className="flex gap-2">
                                     <button
                                         onClick={() => handleEdit(blog)}
                                         className="text-blue-600 hover:text-blue-900">Edit</button>
                                     <button
                                         onClick={() => handleView(blog)}
-                                        className="text-gray-600 hover:text-gray-900">View</button>
-                                    <button className="text-red-600 hover:text-red-900">Delete</button>
+                                        className="text-gray-600 hover:text-gray-900 dark:hover:text-gray-200">View</button>
+                                    <button
+                                        onClick={() => handleDelete(blog.id)}
+                                        className="text-red-600 hover:text-red-900">Delete</button>
                                 </div>
                             </td>
                         </tr>

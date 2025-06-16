@@ -11,6 +11,9 @@ interface User {
 export const getPosts = expressAsyncHandler(async (req: Request, res: Response) => {
 
     const getPosts = await prisma.posts.findMany({
+        where: {
+            status: "published"
+        },
         include: {
             category: true,
             users: {

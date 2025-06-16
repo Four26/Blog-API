@@ -10,6 +10,8 @@ import { userBlogs } from "../controller/userBlogs";
 import { editBlog } from "../controller/editBlog";
 import { postComment } from "../controller/postComment";
 import { getComment } from "../controller/getComment";
+import { getUserPosts } from "../controller/getUserPosts";
+import { deletePosts } from "../controller/deletePosts";
 
 
 const router = express.Router();
@@ -24,6 +26,7 @@ router.get("/checkAuth", isAuthenticated, authenticate);
 router.get("/getPost", getPosts);
 router.get("/myBlogs", isAuthenticated, userBlogs);
 router.get("/getComments", isAuthenticated, getComment);
-
+router.get("/getUserPosts", isAuthenticated, getUserPosts);
+router.delete("/deletePost/:id", isAuthenticated, deletePosts);
 
 export default router;

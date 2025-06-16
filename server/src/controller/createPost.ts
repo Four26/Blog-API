@@ -38,7 +38,8 @@ export const createPost = expressAsyncHandler(async (req: Request, res: Response
             author_id,
             category_id: category_id?.id,
             status,
-            created_at: new Date()
+            created_at: new Date(),
+            updated_at: new Date()
         }
     });
 

@@ -29,7 +29,7 @@ export const editBlog = expressAsyncHandler(async (req: Request, res: Response) 
             author_id: userId,
             category_id: category_id?.id,
             status: status,
-            created_at: new Date()
+            updated_at: new Date()
         }
     });
 
