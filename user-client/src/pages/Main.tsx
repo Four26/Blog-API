@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getPosts } from "../api/getPosts";
 import { useAppSelector } from "../redux/hooks/hooks";
@@ -28,6 +28,7 @@ const Main = () => {
 
     const [posts, setPosts] = useState<Post[]>();
     const user = useAppSelector((state) => state.auth.currentUser);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -36,6 +37,10 @@ const Main = () => {
         }
         fetchPosts();
     }, []);
+
+    const handleView = (blog: Post) => {
+        navigate(`/views/${blog.id}`, { state: blog })
+    }
 
     return (
         <div className="flex-1 ">
@@ -57,7 +62,7 @@ const Main = () => {
                     {posts?.map((post) => (
                         <div
                             key={post.id}
-                            className="border border-gray-300 outline-none p-3 w-[700px] h-[300px] overflow-hidden rounded flex flex-col justify-between shadow-lg dark:border-gray-700"
+                            className="border border-gray-300 outline-none p-3 w-[700px] h-[300px] overflow-hidden rounded flex flex-col justify-between items-start shadow-lg dark:border-gray-700"
                         >
                             <h3
                                 className="uppercase text-l text-blue-500"
@@ -75,10 +80,10 @@ const Main = () => {
                             <p
                                 className="line-clamp-3 text-[#333333] dark:text-gray-300"
                             >{post.content}</p>
-                            <Link
-                                to=""
-                                className="text-blue-500 text-sm hover:text-blue-600 transition-colors duration-200 ease-in-out"
-                            >Read More &#8594;</Link>
+                            <button
+                                onClick={() => handleView(post)}
+                                className="text-blue-500 cursor-pointer text-sm hover:text-blue-600 transition-colors duration-200 ease-in-out"
+                            >Read More &#8594;</button>
                         </div>
                     ))}
                 </div>

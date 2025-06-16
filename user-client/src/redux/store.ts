@@ -2,12 +2,16 @@ import { configureStore } from "@reduxjs/toolkit";
 import signUpSlice from "./slices/signUpSlice";
 import authSlice from "./slices/authSlice";
 import createPostSlice from "./slices/createPostSlice";
+import editBlogSlice from "./slices/editBlogSlice";
+import postCommentSlice from "./slices/postCommentSlice";
 
 export const store = configureStore({
     reducer: {
         signUp: signUpSlice,
         auth: authSlice,
-        createPost: createPostSlice
+        createPost: createPostSlice,
+        editBlog: editBlogSlice,
+        postComment: postCommentSlice
     }
 });
 

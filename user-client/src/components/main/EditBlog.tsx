@@ -1,15 +1,18 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks/hooks";
-import { BlogData, createPost, setField } from "../../redux/slices/createPostSlice";
+import { BlogData, setField } from "../../redux/slices/editBlogSlice";
+import { editBlog } from "../../redux/slices/editBlogSlice";
 
+const EditBlog = () => {
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const blogData = useAppSelector((state) => state.editBlog.blogData);
 
-const CreateBlog = () => {
-
-    const [successMessage, setSuccessMessage] = useState<string | null>(null)
-    const blogData = useAppSelector((state) => state.createPost.blogData);
     const dispatch = useAppDispatch();
+    const location = useLocation();
+    const editBlogLocation = location.state;
 
+    console.log(editBlogLocation);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
 
@@ -20,19 +23,22 @@ const CreateBlog = () => {
             dispatch(setField({ name: name as keyof BlogData, value: value }));
         }
     }
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const cleanedData = {
-            ...blogData,
-            title: blogData.title.trim(),
-            content: blogData.content.trim(),
-            category: blogData.category.trim()
+            id: editBlogLocation.id,
+            blogData: {
+                ...blogData,
+                title: blogData.title.trim(),
+                content: blogData.content.trim(),
+            }
         }
 
-        const result = await dispatch(createPost(cleanedData));
+        const result = await dispatch(editBlog(cleanedData));
 
-        if (createPost.fulfilled.match(result)) {
+        if (editBlog.fulfilled.match(result)) {
             setSuccessMessage(result.payload.message);
             setTimeout(() => {
                 setSuccessMessage(null);
@@ -40,6 +46,15 @@ const CreateBlog = () => {
         }
     }
 
+    useEffect(() => {
+        if (editBlogLocation) {
+            dispatch(setField({ name: "title", value: editBlogLocation.title }));
+            dispatch(setField({ name: "content", value: editBlogLocation.content }));
+            dispatch(setField({ name: "category", value: editBlogLocation.category.name }));
+            dispatch(setField({ name: "publish", value: editBlogLocation.status === "published" }));
+        }
+
+    }, [editBlogLocation, dispatch]);
     return (
         <div className="py-5 px-30 overflow-y-scroll">
             <Link to="/user" className="cursor-pointer text-blue-500 hover:text-blue-700">Back to home &#8592;</Link>
@@ -133,4 +148,4 @@ const CreateBlog = () => {
     )
 }
 
-export default CreateBlog;
+export default EditBlog;

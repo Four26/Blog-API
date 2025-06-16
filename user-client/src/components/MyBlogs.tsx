@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { userBlogs } from "../api/userBlogs";
+import { useNavigate } from "react-router-dom";
 
 interface Blog {
     id: number
@@ -17,7 +18,9 @@ const MyBlogs = () => {
     const [blogs, setBlogs] = useState<Blog[]>([]);
     const [viewMode, setViewMode] = useState<string>("grid")
     const [activeTab, setActiveTab] = useState<string>("all");
+    const navigate = useNavigate();
 
+    //To fetch user blogs
     useEffect(() => {
         const fetchUserBlogs = async () => {
             const data = await userBlogs();
@@ -27,15 +30,24 @@ const MyBlogs = () => {
         fetchUserBlogs();
     }, []);
 
+    //Filter blogs based on draft and published
     const filteredBlogs = blogs.filter((blog) => {
         if (activeTab === "draft") return blog.status === "draft";
         if (activeTab === "published") return blog.status === "published";
         return true
     });
 
+    //Get the number of draft and published blogs
     const draftBlogs = blogs.filter((blog) => blog.status === "draft").length;
     const publishedBlogs = blogs.filter((blog) => blog.status === "published").length;
 
+    const handleEdit = (blog: Blog) => {
+        navigate(`/edit-blog/${blog.id}`, { state: blog });
+    }
+
+    const handleView = (blog: Blog) => {
+        navigate(`/views/${blog.id}`, { state: blog });
+    }
 
     const GridView = () => (
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-4 gap-4 ">
@@ -61,8 +73,12 @@ const MyBlogs = () => {
 
                     <div className="flex justify-between items-center mt-4 border-t border-gray-400 pt-2">
                         <div className="flex justify-between items-center gap-2">
-                            <button className="cursor-pointer text-blue-500 hover:text-blue-700 text-sm px-2 transition-colors duration-200 ease-in-out">Edit</button>
-                            <button className="cursor-pointer text-gray-500 hover:text-gray-700 text-sm px-2 transition-colors duration-200 ease-in-out">View</button>
+                            <button
+                                onClick={() => handleEdit(blog)}
+                                className="cursor-pointer text-blue-500 hover:text-blue-700 text-sm px-2 transition-colors duration-200 ease-in-out">Edit</button>
+                            <button
+                                onClick={() => handleView(blog)}
+                                className="cursor-pointer text-gray-500 hover:text-gray-700 text-sm px-2 transition-colors duration-200 ease-in-out">View</button>
                         </div>
 
                         <div>
@@ -113,8 +129,12 @@ const MyBlogs = () => {
                             </td>
                             <td className="px-6 py-1 text-sm">
                                 <div className="flex gap-2">
-                                    <button className="text-blue-600 hover:text-blue-900">Edit</button>
-                                    <button className="text-gray-600 hover:text-gray-900">View</button>
+                                    <button
+                                        onClick={() => handleEdit(blog)}
+                                        className="text-blue-600 hover:text-blue-900">Edit</button>
+                                    <button
+                                        onClick={() => handleView(blog)}
+                                        className="text-gray-600 hover:text-gray-900">View</button>
                                     <button className="text-red-600 hover:text-red-900">Delete</button>
                                 </div>
                             </td>
@@ -129,7 +149,7 @@ const MyBlogs = () => {
         <div className="flex-1">
             <div className="p-10">
                 <div className="title flex items-center justify-between">
-                    <h1 className="text-2xl">My Posts</h1>
+                    <h1 className="text-2xl">My Blogs</h1>
 
                     <div className="view">
                         <button
@@ -145,7 +165,7 @@ const MyBlogs = () => {
                     <div className="filter-tab py-2 mt-10 flex justify-start items-center gap-5 border-b border-gray-400">
                         <button
                             onClick={() => setActiveTab("all")}
-                            className="cursor-pointer">All Posts ({blogs.length})</button>
+                            className="cursor-pointer">All Blogs ({blogs.length})</button>
                         <button
                             onClick={() => setActiveTab("draft")}
                             className="cursor-pointer">Draft({draftBlogs})</button>

@@ -7,6 +7,10 @@ import { createPost } from "../controller/createPost";
 import { getPosts } from "../controller/getPosts";
 import { authenticate } from "../controller/authenticate";
 import { userBlogs } from "../controller/userBlogs";
+import { editBlog } from "../controller/editBlog";
+import { postComment } from "../controller/postComment";
+import { getComment } from "../controller/getComment";
+
 
 const router = express.Router();
 
@@ -14,9 +18,12 @@ router.post("/signUp", signUp);
 router.post("/logIn", logIn);
 router.post("/logOut", logOut);
 router.post("/createPost", isAuthenticated, createPost);
+router.post("/postComment:id", isAuthenticated, postComment);
+router.put("/editBlog:id", isAuthenticated, editBlog)
 router.get("/checkAuth", isAuthenticated, authenticate);
 router.get("/getPost", getPosts);
 router.get("/myBlogs", isAuthenticated, userBlogs);
+router.get("/getComments", isAuthenticated, getComment);
 
 
 export default router;

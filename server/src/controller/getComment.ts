@@ -4,15 +4,14 @@ import expressAsyncHandler from "express-async-handler";
 
 const prisma = new PrismaClient();
 
-interface User {
-    id: number
-}
+export const getComment = expressAsyncHandler(async (req: Request, res: Response) => {
+    const postId = req.query.id;
 
-export const getPosts = expressAsyncHandler(async (req: Request, res: Response) => {
-
-    const getPosts = await prisma.posts.findMany({
+    const fetchComment = await prisma.comments.findMany({
+        where: {
+            post_id: Number(postId)
+        },
         include: {
-            category: true,
             users: {
                 select: {
                     firstname: true,
@@ -25,7 +24,6 @@ export const getPosts = expressAsyncHandler(async (req: Request, res: Response) 
         }
     });
 
-    res.status(200).json(getPosts);
+    res.status(200).json(fetchComment);
     return;
 });
-

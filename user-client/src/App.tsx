@@ -8,6 +8,8 @@ import { Authenticated } from "./pages/Authenticated";
 import Home from "./pages/Home";
 import CreateBlog from "./components/main/CreateBlog";
 import MyBlogs from "./components/MyBlogs";
+import EditBlog from "./components/main/EditBlog";
+import Views from "./components/main/Views";
 
 
 
@@ -21,6 +23,10 @@ function App() {
           <Route path="/user" element={<Authenticated> <Main /></Authenticated>} />
           <Route path="/post" element={<Authenticated><CreateBlog /></Authenticated>} />
           <Route path="/myposts" element={<Authenticated><MyBlogs /></Authenticated>} />
+          <Route path="/edit-blog/:id" element={<Authenticated><EditBlog /></Authenticated>} />
+          <Route path="/views/:id" element={<Authenticated><Views /></Authenticated>} />
+
+
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
