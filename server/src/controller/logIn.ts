@@ -4,8 +4,8 @@ import { Request, Response } from "express";
 import { Strategy as LocalStrategy } from "passport-local"
 import expressAsyncHandler from "express-async-handler";
 import { PrismaClient, users } from "@prisma/client";
+import prisma from "../middleware/prisma";
 
-const prisma = new PrismaClient();
 
 passport.use(new LocalStrategy(async (username: string, password: string, done: any) => {
     try {

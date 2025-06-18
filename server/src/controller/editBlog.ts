@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import expressAsyncHandler from "express-async-handler";
+import prisma from "../middleware/prisma";
 
-const prisma = new PrismaClient();
 interface User {
     id: number
 }

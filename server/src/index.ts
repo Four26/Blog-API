@@ -32,6 +32,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(session({
     store: new (connectPgSimple(session))({
         pool,
+        conString: process.env.NODE_ENV === "production"
+            ? process.env.DATABASE_URL_PROD
+            : process.env.DATABASE_URL,
         tableName: "session",
         pruneSessionInterval: 60 * 60,
         ttl: 24 * 60 * 60
@@ -43,7 +46,8 @@ app.use(session({
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
         secure: isProd,
-        sameSite: isProd ? "none" : "lax"
+        sameSite: isProd ? "none" : "lax",
+        domain: isProd ? ".onrender.com" : undefined
     }
 }));
 

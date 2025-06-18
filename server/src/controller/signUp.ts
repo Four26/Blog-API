@@ -3,9 +3,9 @@ import bcryptjs from "bcryptjs";
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import expressAsyncHandler from "express-async-handler";
+import prisma from "../middleware/prisma";
 
 
-const prisma = new PrismaClient();
 
 export const signUp = expressAsyncHandler(async (req: Request, res: Response) => {
 
