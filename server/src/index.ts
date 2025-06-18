@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { pool } from "./db/db";
+import { pool, isProd } from "./db/db";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import router from './router/router';
@@ -11,9 +11,16 @@ import { errorHandler } from "./middleware/errorHandler";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT
+const allowedOrigins = process.env.CLIENT_URL?.split(",") ?? [];
 
 app.use(cors({
-    origin: process.env.CLIENT_URL,
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
     exposedHeaders: ["Content-Type", "Authorization"]
@@ -35,6 +42,8 @@ app.use(session({
     cookie: {
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax"
     }
 }));
 
