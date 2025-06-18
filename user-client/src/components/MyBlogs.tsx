@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { userBlogs } from "../api/userBlogs";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { deletePost } from "../api/deletePost";
 
 interface Blog {
@@ -105,11 +105,11 @@ const MyBlogs = () => {
             <table className="w-full ">
                 <thead className="bg-gray-200 dark:bg-gray-600">
                     <tr>
-                        <th className="px-6 py-3 text-left font-normal uppercase tracking-normal">Title</th>
-                        <th className="px-6 py-3 text-left font-normal uppercase tracking-normal">Category</th>
-                        <th className="px-6 py-3 text-left font-normal uppercase tracking-normal">Status</th>
-                        <th className="px-6 py-3 text-left font-normal uppercase tracking-normal">Date</th>
-                        <th className="px-6 py-3 text-left font-normal uppercase tracking-normal">Actions</th>
+                        <th className="px-2 py-3 text-left font-normal uppercase tracking-normal">Title</th>
+                        <th className="px-2 py-3 text-left font-normal uppercase tracking-normal">Category</th>
+                        <th className="px-2 py-3 text-left font-normal uppercase tracking-normal">Status</th>
+                        <th className="px-2 py-3 text-left font-normal uppercase tracking-normal">Date</th>
+                        <th className="px-2 py-3 text-left font-normal uppercase tracking-normal">Actions</th>
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-300">
@@ -117,28 +117,28 @@ const MyBlogs = () => {
                         <tr
                             key={blog.id}
                         >
-                            <td className="px-6 py-2 text-sm">
+                            <td className="px-2 py-2 text-sm">
                                 {blog.title}
                             </td>
-                            <td className="px-6 py-2 text-sm">
+                            <td className="px-2 py-2 text-sm">
                                 <span className="text-blue-500">
                                     {blog.category.name}
 
                                 </span>
                             </td>
-                            <td className="px-6 py-2 text-sm">
+                            <td className="px-2 py-2 text-sm">
                                 <span className={` ${blog.status === "published" ? "text-green-800 bg-green-300 rounded-full px-2 py-1 text-xs" : "text-yellow-800 bg-yellow-300 rounded-full px-2 py-1 text-xs"}`}>
                                     {blog.status === "published" ? "Published" : "Draft"}
                                 </span>
                             </td>
-                            <td className="px-6 py-2 text-sm">
+                            <td className="px-2 py-2 text-sm">
                                 {new Date(blog.created_at).toLocaleDateString("en-Us", {
                                     month: "long",
                                     day: "numeric",
                                     year: "numeric"
                                 })}
                             </td>
-                            <td className="px-6 py-2 text-sm">
+                            <td className="px-2 py-2 text-sm">
                                 <div className="flex gap-2">
                                     <button
                                         onClick={() => handleEdit(blog)}
@@ -161,7 +161,9 @@ const MyBlogs = () => {
     return (
         <div className="flex-1">
             <div className="p-10">
-                <div className="title flex items-center justify-between">
+                <Link to="/user" className="cursor-pointer text-blue-500 hover:text-blue-700">Back to home &#8592;</Link>
+
+                <div className="title mt-5 flex items-center justify-between">
                     <h1 className="text-2xl">My Blogs</h1>
 
                     <div className="view">

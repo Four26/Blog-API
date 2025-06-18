@@ -69,13 +69,13 @@ const Views = () => {
 
     return (
         <div className="flex-1">
-            <div className="py-5 px-30">
+            <div className="py-5 px-5 flex flex-col justify-center sm:items-center ">
                 <Link to="/user" className="cursor-pointer text-blue-500 hover:text-blue-700">Back to home &#8592;</Link>
                 {successMessage && (
                     <p className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg">{successMessage}</p>
                 )}
                 {view && (
-                    <div className="p-5 mt-5 bg-white rounded w-full dark:bg-dark dark:border dark:border-gray-600">
+                    <div className="p-5 mt-5 bg-white rounded sm:w-[700px] dark:bg-dark dark:border dark:border-gray-600">
                         <h1 className="text-blue-500 uppercase">{view.category.name}</h1>
                         <h2 className="mt-10 mb-5 text-2xl">{view.title}</h2>
                         <div className="leading-relaxed">{view.content.split("\n").map((paragraph, index) => paragraph.trim() && (
@@ -88,7 +88,7 @@ const Views = () => {
                         ))}</div>
                     </div>
                 )}
-                <div className="comment-wrapper p-5 mt-20 bg-white rounded dark:bg-dark dark:border dark:border-gray-600">
+                <div className="comment-wrapper p-5 mt-20 bg-white rounded dark:bg-dark dark:border dark:border-gray-600 sm:w-[900px]">
                     <form
                         onSubmit={handlePostComment}
                         className="post-comment pb-5 border-b border-gray-400">

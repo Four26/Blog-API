@@ -41,16 +41,16 @@ const CreateBlog = () => {
     }
 
     return (
-        <div className="py-5 px-30 overflow-y-scroll">
+        <div className="p-5">
             <Link to="/user" className="cursor-pointer text-blue-500 hover:text-blue-700">Back to home &#8592;</Link>
-            <div className="create-post-wrapper py-3">
+            <div className="create-post-wrapper py-3 flex justify-between items-center">
                 {successMessage &&
                     (
                         <p className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg">{successMessage}</p>
                     )}
                 <form
                     onSubmit={handleSubmit}
-                    className="p-3 flex flex-col justify-between shadow-md rounded-md border border-gray-300 min-h-screen">
+                    className="p-3 w-full flex flex-col justify-between items-stretch shadow-md rounded-md border border-gray-300 min-h-screen  overflow-hidden">
 
                     {/* Title input */}
                     <input
@@ -91,9 +91,9 @@ const CreateBlog = () => {
                             value={blogData.category}
                             required
                             onChange={handleChange}
-                            className="w-full p-3 text-sm font-normal border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-3 text-sm font-normal border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-500 "
                         >
-                            <option disabled>Select a Category</option>
+                            <option disabled className="dark:text-gray-50">Select a Category</option>
                             <option value="Technology">Technology</option>
                             <option value="Lifestyle">Lifestyle</option>
                             <option value="Business">Business</option>
@@ -102,10 +102,10 @@ const CreateBlog = () => {
                     </label>
 
 
-                    <div className="publish-wrapper flex items-center justify-between">
+                    <div className="publish-wrapper flex items-center justify-between gap-5">
                         {/* Publish checkbox */}
                         <div>
-                            <label htmlFor="publish" className="flex items-center gap-2 cursor-pointer text-gray-700 dark:text-white">
+                            <label htmlFor="publish" className="flex items-center gap-2 cursor-pointer text-wrap text-gray-700 dark:text-white">
                                 <input
                                     type="checkbox"
                                     name="publish"

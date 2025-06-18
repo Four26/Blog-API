@@ -37,16 +37,16 @@ const Navbar = () => {
 
     return (
         <>
-            <div className="navbar px-5 py-4 flex justify-between shadow">
+            <div className="navbar px-5 py-4 flex justify-between items-center shadow">
                 <Link to="/user">
-                    <h1 className="text-3xl cursor-pointer flex items-center font-semibold"><span><CiHome /></span>Blog API</h1>
+                    <h1 className="sm:text-3xl cursor-pointer flex items-center font-semibold"><span><CiHome /></span>Blog API</h1>
                 </Link>
-                <div className="flex items-center gap-4">
-                    <button className={`cursor-pointer transition-transform duration-300 ${rotate ? "rotate-180" : ""}`} onClick={toogleDarkMode}>  {darkMode === "light" ? <MdOutlineDarkMode className="text-2xl" /> : <MdOutlineLightMode className="text-2xl" />
+                <div className="flex justify-between items-center">
+                    <button className={`px-2 cursor-pointer transition-transform duration-300 ${rotate ? "rotate-180" : ""}`} onClick={toogleDarkMode}>  {darkMode === "light" ? <MdOutlineDarkMode className="text-2xl" /> : <MdOutlineLightMode className="text-2xl" />
                     }</button>
 
                     {!user && (
-                        <>
+                        <div>
                             <Link
                                 to="/login"
                                 className="border border-gray-400 px-4 py-1.5 rounded-md hover:bg-green-500 hover:outline-none hover:border-gray-50 hover:text-white transition-all duration-300 ease-in-out"
@@ -55,13 +55,15 @@ const Navbar = () => {
                                 to="/signup"
                                 className="border border-gray-400 px-4 py-1.5 rounded-md hover:bg-blue-500 hover:outline-none hover:border-gray-50 hover:text-white transition-all duration-300 ease-in-out"
                             > Sign Up</Link>
-                        </>
+                        </div>
                     )}
 
                     {user && (
-                        <div className="flex items-center justify-between gap-4">
-                            <Link to="/post" className=" cursor-pointer px-4 py-1.5 rounded-md text-white flex items-center gap-2 bg-blue-500 hover:bg-blue-700 transition-colors duration-200 ease-in-out"> <span><IoIosCreate className="text-sm" /></span> Create Blog</Link>
-                            <div>{user}</div>
+                        <div className="flex items-center justify-center gap-2">
+                            <Link
+                                to="/post"
+                                className="sm:text-sm cursor-pointer px-3 py-1.5 rounded-md text-white flex items-center gap-2 bg-blue-500 hover:bg-blue-700 transition-colors duration-200 ease-in-out"> <span><IoIosCreate className="text-sm" /></span> Create Blog</Link>
+                            <p>{user}</p>
                             <div
                                 className="relative group cursor-pointer">
                                 <FiLogOut
