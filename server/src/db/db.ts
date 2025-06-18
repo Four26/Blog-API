@@ -1,7 +1,8 @@
+import { configDotenv } from 'dotenv';
 import { Pool } from 'pg';
-
+configDotenv()
 
 export const pool = new Pool({
-    connectionString: 'postgresql://postgres:root_0926@localhost:5432/blog_db'
+    connectionString: process.env.DATABASE_URL
 });
 
