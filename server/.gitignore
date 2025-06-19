@@ -9,3 +9,5 @@ generated/
 /generated/prisma
 
 /src/generated/prisma
+
+/dist
