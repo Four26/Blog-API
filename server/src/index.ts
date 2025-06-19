@@ -14,7 +14,7 @@ const PORT = process.env.PORT
 const allowedOrigins = process.env.CLIENT_URL;
 
 console.log(allowedOrigins);
-console.log(isProd)
+console.log(isProd);
 
 app.use(cors({
     origin: allowedOrigins,
