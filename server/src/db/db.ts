@@ -7,10 +7,6 @@ configDotenv({
 });
 
 export const isProd = process.env.NODE_ENV === "production";
-console.log(isProd)
-
-console.log("DATABASE_URL", process.env.DATABASE_URL);
-console.log("NODE_ENV", process.env.NODE_ENV);
 
 export const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
