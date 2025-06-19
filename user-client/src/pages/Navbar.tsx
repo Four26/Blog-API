@@ -14,7 +14,6 @@ const Navbar = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.auth.currentUser);
-    console.log("User: ", user)
 
     const handleLogOut = async () => {
         const result = await dispatch(logOut());
