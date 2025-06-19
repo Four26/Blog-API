@@ -13,6 +13,8 @@ const app = express();
 const PORT = process.env.PORT
 const allowedOrigins = process.env.CLIENT_URL;
 
+console.log(allowedOrigins);
+
 app.use(cors({
     origin: allowedOrigins,
     methods: ["GET", "POST", "DELETE", "PUT"],
@@ -37,7 +39,7 @@ app.use(session({
     cookie: {
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
-        secure: isProd,
+        secure: true,
         sameSite: isProd ? "none" : "lax"
     }
 }));
