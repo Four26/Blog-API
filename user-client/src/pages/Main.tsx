@@ -35,6 +35,7 @@ const Main = () => {
     const [posts, setPosts] = useState<Post[]>();
     const [userPosts, setUserPosts] = useState<UserPosts[] | null>(null);
     const user = useAppSelector((state) => state.auth.currentUser);
+    console.log("dwd", user)
     const navigate = useNavigate();
 
     useEffect(() => {
