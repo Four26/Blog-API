@@ -1,14 +1,9 @@
 import { Request, Response, NextFunction } from "express"
-interface Props {
-    err: Error,
-    req: Request,
-    res: Response,
-    next: NextFunction
-}
 
-export const errorHandler = ({ err, req, res, next }: Props) => {
-    const errStack = err.stack;
-    const errMessage = err.message;
+
+export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+    const errStack = err.stack || "No stack trace available";
+    const errMessage = err.message || "Unknown error";
 
     res.status(500).json({
         message: errMessage,
