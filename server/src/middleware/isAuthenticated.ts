@@ -6,6 +6,5 @@ export const isAuthenticated = expressAsyncHandler(async (req: Request, res: Res
         res.status(401).json({ message: "User not authenticated!" });
         return;
     }
-    res.status(200).json({ isAuthenticated: true, username: (req.user as any).username });
     next();
 });

@@ -92,7 +92,7 @@ const authSlice = createSlice({
             })
             .addCase(logIn.fulfilled, (state, action) => {
                 state.formData = initialState.formData;
-                state.currentUser = action.payload.username;
+                state.currentUser = action.payload;
                 state.isLoading = false;
                 state.logInError = null;
 
@@ -124,7 +124,7 @@ const authSlice = createSlice({
             .addCase(checkAuth.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isAuthenticated = true;
-                state.currentUser = action.payload.username;
+                state.currentUser = action.payload;
             })
             .addCase(checkAuth.rejected, (state) => {
                 state.isLoading = false;

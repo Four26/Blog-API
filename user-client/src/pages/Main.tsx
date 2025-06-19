@@ -33,7 +33,7 @@ interface UserPosts {
 const Main = () => {
 
     const [posts, setPosts] = useState<Post[]>();
-    const [userPosts, setUserPosts] = useState<UserPosts[] | null>(null)
+    const [userPosts, setUserPosts] = useState<UserPosts[] | null>(null);
     const user = useAppSelector((state) => state.auth.currentUser);
     const navigate = useNavigate();
 
@@ -45,6 +45,7 @@ const Main = () => {
 
         const fetchUserPosts = async () => {
             const userPosts = await getUserPosts();
+            console.log(userPosts)
             setUserPosts(userPosts);
         }
 
