@@ -3,9 +3,16 @@ import passport from "passport";
 import { Request, Response } from "express";
 import { Strategy as LocalStrategy } from "passport-local"
 import expressAsyncHandler from "express-async-handler";
-import { PrismaClient, users } from "@prisma/client";
 import prisma from "../middleware/prisma";
 
+interface User {
+    id: number;
+    email: string;
+    username: string;
+    password: string;
+    created_at: Date;
+    admin: boolean
+}
 
 passport.use(new LocalStrategy(async (username: string, password: string, done: any) => {
     try {
@@ -48,7 +55,8 @@ passport.deserializeUser(async (id: number, done: any) => {
 });
 
 export const logIn = expressAsyncHandler((req: Request, res: Response) => {
-    passport.authenticate("local", async (err: Error, user: users, info: any) => {
+    passport.authenticate("local", async (err: Error, user: User, info: any) => {
+
         if (err) {
             return res.status(500).json({ error: err.message });
         }
