@@ -24,6 +24,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.set('trust proxy', 1);
+
 app.use(session({
     store: new (connectPgSimple(session))({
         pool,
@@ -35,6 +37,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET ?? 'secret',
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     cookie: {
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
