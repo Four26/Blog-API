@@ -11,3 +11,5 @@ generated/
 /src/generated/prisma
 
 /dist
+
+/generated/prisma

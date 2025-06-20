@@ -7,14 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm install & tsc",
     "start": "ts-node src/index.ts",
-    "dev": "nodemon src/index.ts",
-    "postinstall": "prisma generate && prisma migrate deploy"
+    "dev": "nodemon src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^6.8.2",
+    "@prisma/client": "^6.10.1",
     "bcryptjs": "^3.0.2",
     "connect-pg-simple": "^10.0.0",
     "cors": "^2.8.5",
@@ -35,10 +34,10 @@
     "@types/express": "^5.0.3",
     "@types/express-session": "^1.18.2",
     "@types/multer": "^1.4.13",
+    "@types/node": "^20.11.0",
     "@types/passport": "^1.0.17",
     "@types/passport-local": "^1.0.38",
     "@types/pg": "^8.15.4",
-    "@types/node": "^20.11.0",
     "nodemon": "^3.1.10",
     "prisma": "^6.8.2"
   }
