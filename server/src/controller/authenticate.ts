@@ -5,8 +5,7 @@ interface User {
     username: string
 }
 
-export const authenticate = async (req: Request, res: Response) => {
+export const authenticate = expressAsyncHandler(async (req: Request, res: Response): Promise<void> => {
     const username = (req.user as User).username
     res.status(200).json(username);
-    return;
-}
+});

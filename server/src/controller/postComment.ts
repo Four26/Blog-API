@@ -7,7 +7,7 @@ interface User {
     id: number
 }
 
-export const postComment = expressAsyncHandler(async (req: Request, res: Response) => {
+export const postComment = expressAsyncHandler(async (req: Request, res: Response): Promise<void> => {
     const postId = Number(req.params.id);
     const userId = (req.user as User).id;
     const { comment } = req.body;
@@ -24,5 +24,4 @@ export const postComment = expressAsyncHandler(async (req: Request, res: Respons
     });
 
     res.status(200).json({ message: "Your comment is posted." })
-    return;
 });

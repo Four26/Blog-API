@@ -7,7 +7,7 @@ interface User {
     id: number
 }
 
-export const userBlogs = expressAsyncHandler(async (req: Request, res: Response) => {
+export const userBlogs = expressAsyncHandler(async (req: Request, res: Response): Promise<void> => {
 
     const userId = (req.user as User).id;
 

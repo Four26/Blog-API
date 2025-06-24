@@ -5,6 +5,7 @@ const prismaClientSingleton = () => {
         throw new Error("DATABASE_URL is not defined in environment variables");
     }
 
+    console.log(process.env.DATABASE_URL)
     return new PrismaClient({
         datasources: {
             db: {

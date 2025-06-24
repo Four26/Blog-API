@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
 import expressAsyncHandler from "express-async-handler";
 import prisma from "../middleware/prisma";
 
 
-export const getComment = expressAsyncHandler(async (req: Request, res: Response) => {
+export const getComment = expressAsyncHandler(async (req: Request, res: Response): Promise<void> => {
     const postId = req.query.id;
 
     const fetchComment = await prisma.comments.findMany({
@@ -25,5 +24,4 @@ export const getComment = expressAsyncHandler(async (req: Request, res: Response
     });
 
     res.status(200).json(fetchComment);
-    return;
 });

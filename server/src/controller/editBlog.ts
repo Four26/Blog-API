@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
 import expressAsyncHandler from "express-async-handler";
 import prisma from "../middleware/prisma";
 
@@ -7,7 +6,7 @@ interface User {
     id: number
 }
 
-export const editBlog = expressAsyncHandler(async (req: Request, res: Response) => {
+export const editBlog = expressAsyncHandler(async (req: Request, res: Response): Promise<void> => {
     const userId = (req.user as User).id;
     const { title, content, category, publish } = req.body
 
@@ -34,5 +33,4 @@ export const editBlog = expressAsyncHandler(async (req: Request, res: Response) 
     });
 
     res.status(200).json({ message: "Your blog is successfully save!" });
-    return;
 });

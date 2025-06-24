@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
 import expressAsyncHandler from "express-async-handler";
 import prisma from "../middleware/prisma";
 
@@ -8,7 +7,7 @@ interface User {
     id: number
 }
 
-export const getUserPosts = expressAsyncHandler(async (req: Request, res: Response) => {
+export const getUserPosts = expressAsyncHandler(async (req: Request, res: Response): Promise<void> => {
 
     const userId = (req.user as User).id;
 
@@ -19,5 +18,4 @@ export const getUserPosts = expressAsyncHandler(async (req: Request, res: Respon
     });
 
     res.status(200).json(getPost);
-    return;
 });

@@ -54,8 +54,8 @@ passport.deserializeUser(async (id: number, done: any) => {
     }
 });
 
-export const logIn = expressAsyncHandler((req: Request, res: Response) => {
-    passport.authenticate("local", async (err: Error, user: User, info: any) => {
+export const logIn = expressAsyncHandler(async (req: Request, res: Response): Promise<void> => {
+    passport.authenticate("local", async (err: any, user: User, info: any) => {
 
         if (err) {
             return res.status(500).json({ error: err.message });
