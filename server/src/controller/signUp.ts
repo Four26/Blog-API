@@ -16,6 +16,7 @@ const validateSignUp = z.object({
     path: ["confirmPassword"]
 });
 
+
 export const signUp = expressAsyncHandler(async (req: Request, res: Response): Promise<void> => {
 
     try {
