@@ -69,7 +69,7 @@ export const logIn = expressAsyncHandler(async (req: Request, res: Response): Pr
             if (error) {
                 return res.status(500).json({ error: error.message });
             }
-            return res.status(200).json({ message: 'Successfully logged in!' });
+            return res.status(200).json({ message: 'Successfully logged in!', user: user.username });
         });
 
     })(req, res);
