@@ -2,6 +2,12 @@ import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
 import prisma from "../middleware/prisma";
 
+interface CreatePostBody {
+    title: string;
+    content: string;
+    category: string;
+    publish: boolean;
+}
 
 interface User {
     id: number
