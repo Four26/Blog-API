@@ -74,7 +74,7 @@ const Main = () => {
                     className="text-4xl mt-10"
                 >Recent Posts</h2>
                 <div className="flex flex-wrap pb-20 pt-7 justify-center items-center overflow-y-scroll gap-5">
-                    {posts?.map((post) => (
+                    {posts?.length !== 0 ? posts?.map((post) => (
                         <div
                             key={post.id}
                             className="border border-gray-300 outline-none p-3 w-[700px] h-[300px] overflow-hidden rounded flex flex-col justify-between items-start shadow-lg dark:border-gray-700"
@@ -100,7 +100,11 @@ const Main = () => {
                                 className="text-blue-500 cursor-pointer text-sm hover:text-blue-600 transition-colors duration-200 ease-in-out"
                             >Read More &#8594;</button>
                         </div>
-                    ))}
+                    )) : (
+                        <div>
+                            <p className="capitalize">There are no recent posts.</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

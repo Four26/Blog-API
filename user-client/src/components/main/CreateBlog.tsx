@@ -29,7 +29,7 @@ const CreateBlog = () => {
             content: blogData.content.trim(),
             category: blogData.category.trim()
         }
-
+        console.log(cleanedData)
         const result = await dispatch(createPost(cleanedData));
 
         if (createPost.fulfilled.match(result)) {
