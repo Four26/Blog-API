@@ -1,7 +1,6 @@
 import z from "zod";
 import bcryptjs from "bcryptjs";
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
 import expressAsyncHandler from "express-async-handler";
 import prisma from "../middleware/prisma";
 
@@ -61,7 +60,7 @@ export const signUp = expressAsyncHandler(async (req: Request, res: Response): P
                 }
             });
 
-            res.status(200).json({ message: "User created successfully!", user: createUser });
+            res.status(200).json({ message: "User created successfully!" });
         }
     } catch (error) {
         if (error instanceof z.ZodError) {
