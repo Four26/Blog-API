@@ -21,7 +21,7 @@ const initialState: CommentState = {
     error: ""
 }
 
-export const postComment = createAsyncThunk("postComment", async (commentData: Comment, thunkAPI) => {
+export const postComment = createAsyncThunk<{ message: string }, Comment, { rejectValue: string }>("postComment", async (commentData: Comment, thunkAPI) => {
     try {
         const response = await fetch(`${URL}/postComment${commentData.id}`, {
             method: "POST",
@@ -55,7 +55,7 @@ const postCommentSlice = createSlice({
             })
             .addCase(postComment.fulfilled, (state, action) => {
                 state.commentData = initialState.commentData;
-                state.successfulMessage = action.payload;
+                state.successfulMessage = action.payload.message;
                 state.error = "";
             })
             .addCase(postComment.rejected, (state, action) => {

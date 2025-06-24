@@ -1,4 +1,4 @@
-const Home = () => {
+const Home = (): React.JSX.Element => {
     return (
         <div className="flex-1 intro-wrapper px-5 py-20 flex flex-col justify-center items-center bg-stone-200 dark:bg-dark">
             <h1

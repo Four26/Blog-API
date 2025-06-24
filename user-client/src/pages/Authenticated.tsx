@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { checkAuth } from "../redux/slices/authSlice";
 
-export const Authenticated = ({ children }: { children: ReactNode }) => {
+export const Authenticated = ({ children }: { children: ReactNode }): React.JSX.Element => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
     const dispatch = useAppDispatch();
 
@@ -24,6 +24,5 @@ export const Authenticated = ({ children }: { children: ReactNode }) => {
         return <div>Loading...</div>;
     }
 
-    return isAuthenticated ? children : <Navigate to="/" replace />
-
+    return isAuthenticated ? <>{children}</> : <Navigate to="/" replace />
 }

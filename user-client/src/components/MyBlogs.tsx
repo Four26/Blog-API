@@ -14,7 +14,7 @@ interface Blog {
     created_at: number
 }
 
-const MyBlogs = () => {
+const MyBlogs = (): React.JSX.Element => {
 
     const [blogs, setBlogs] = useState<Blog[]>([]);
     const [viewMode, setViewMode] = useState<string>("grid")
@@ -23,9 +23,8 @@ const MyBlogs = () => {
 
     //To fetch user blogs
     useEffect(() => {
-        const fetchUserBlogs = async () => {
+        const fetchUserBlogs = async (): Promise<void> => {
             const data = await userBlogs();
-            console.log(data)
             setBlogs(data);
         }
         fetchUserBlogs();
@@ -42,21 +41,21 @@ const MyBlogs = () => {
     const draftBlogs = blogs.filter((blog) => blog.status === "draft").length;
     const publishedBlogs = blogs.filter((blog) => blog.status === "published").length;
 
-    const handleEdit = (blog: Blog) => {
+    const handleEdit = (blog: Blog): void => {
         navigate(`/edit-blog/${blog.id}`, { state: blog });
     }
 
-    const handleView = (blog: Blog) => {
+    const handleView = (blog: Blog): void => {
         navigate(`/views/${blog.id}`, { state: blog });
     }
 
-    const handleDelete = (id: number) => {
+    const handleDelete = (id: number): void => {
         deletePost(id);
         const updatedBlogs = blogs.filter((blog) => blog.id !== id);
         setBlogs(updatedBlogs);
     }
 
-    const GridView = () => (
+    const GridView = (): React.JSX.Element => (
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-4 gap-4 ">
             {filteredBlogs.map((blog) => (
                 <div
@@ -100,7 +99,7 @@ const MyBlogs = () => {
         </div>
     )
 
-    const TableView = () => (
+    const TableView = (): React.JSX.Element => (
         <div className="mt-10 overflow-y-scroll h-[300px]">
             <table className="w-full ">
                 <thead className="bg-gray-200 dark:bg-gray-600">

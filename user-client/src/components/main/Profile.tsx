@@ -7,7 +7,7 @@ import user from "../../public/images/user.png";
 import settings from "../../public/images/settings.png";
 import { NavLink, NavLinkRenderProps } from "react-router-dom";
 
-const Profile = () => {
+const Profile = (): React.JSX.Element => {
 
     const clickRoute = () => {
         console.log("clicked");

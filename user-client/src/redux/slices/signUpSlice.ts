@@ -29,7 +29,7 @@ const initialState: SignUpState = {
     signUpError: null,
 }
 
-export const signUp = createAsyncThunk("auth/signUp", async (formData: UserData, thunkAPI) => {
+export const signUp = createAsyncThunk<{ message: string }, UserData, { rejectValue: { field: string, message: string }[] }>("auth/signUp", async (formData: UserData, thunkAPI) => {
     try {
         const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/signUp`, {
             method: "POST",
@@ -44,7 +44,7 @@ export const signUp = createAsyncThunk("auth/signUp", async (formData: UserData,
         return data;
     } catch (error) {
         console.log(error);
-        return thunkAPI.rejectWithValue(error instanceof Error ? error.message : "Unknown error occured.")
+        return thunkAPI.rejectWithValue([{ field: 'error', message: error instanceof Error ? error.message : "Unknown error occured." }]);
     }
 });
 

@@ -5,7 +5,7 @@ import { usePasswordToggle } from "../hooks/togglePassword";
 import { setField, signUp, UserData } from "../redux/slices/signUpSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
 
-const Signup = () => {
+const Signup = (): React.JSX.Element => {
 
     const { showPassword, handleShowPassword } = usePasswordToggle();
     const formData = useAppSelector((state) => state.signUp.formData);
@@ -15,13 +15,13 @@ const Signup = () => {
 
 
 
-    const getFieldError = (fieldName: string) => {
+    const getFieldError = (fieldName: string): string[] => {
         if (!Array.isArray(signUpError)) return [];
 
         return signUpError.filter(error => error.field === fieldName).map(error => error.message);
     }
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         const result = await dispatch(signUp(formData));
 
@@ -31,7 +31,7 @@ const Signup = () => {
 
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const { name, value } = e.target;
         dispatch(setField({ name: name as keyof UserData, value }));
     };
@@ -96,4 +96,4 @@ const Signup = () => {
     )
 }
 
-export default Signup
+export default Signup;

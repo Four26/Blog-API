@@ -24,7 +24,7 @@ const initialState: logInState = {
     isAuthenticated: false
 }
 
-export const logIn = createAsyncThunk("auth/logIn", async (formData: UserData, thunkAPI) => {
+export const logIn = createAsyncThunk<string, UserData, { rejectValue: string }>("auth/logIn", async (formData: UserData, thunkAPI) => {
     try {
         const response = await fetch(`${URL}/logIn`, {
             method: "POST",
@@ -44,7 +44,7 @@ export const logIn = createAsyncThunk("auth/logIn", async (formData: UserData, t
     }
 });
 
-export const logOut = createAsyncThunk("auth/logOut", async (_: void, thunkAPI) => {
+export const logOut = createAsyncThunk<{ message: string }, void, { rejectValue: string }>("auth/logOut", async (_: void, thunkAPI) => {
     try {
         const response = await fetch(`${URL}/logOut`, {
             method: "POST",
@@ -61,7 +61,7 @@ export const logOut = createAsyncThunk("auth/logOut", async (_: void, thunkAPI) 
 
 });
 
-export const checkAuth = createAsyncThunk("auth/checkAuth", async (_: void, thunkAPI) => {
+export const checkAuth = createAsyncThunk<string, void, { rejectValue: string }>("auth/checkAuth", async (_: void, thunkAPI) => {
     try {
         const response = await fetch(`${URL}/checkAuth`, {
             method: "GET",

@@ -2,12 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoIosCreate } from "react-icons/io";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
 import { logOut } from "../redux/slices/authSlice";
 import { CiHome } from "react-icons/ci";
 
-const Navbar = () => {
+const Navbar = (): React.JSX.Element => {
     const [darkMode, setDarkMode] = useState<string>("light");
     const [rotate, setRotate] = useState<boolean>(false);
 
@@ -15,7 +15,7 @@ const Navbar = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.auth.currentUser);
 
-    const handleLogOut = async () => {
+    const handleLogOut = async (): Promise<void> => {
         const result = await dispatch(logOut());
 
         if (logOut.fulfilled.match(result)) {
@@ -25,7 +25,7 @@ const Navbar = () => {
         }
     };
 
-    const toogleDarkMode = () => {
+    const toogleDarkMode = (): void => {
         setRotate(!rotate);
         setDarkMode((prev) => (prev === "light" ? "dark" : "light"))
     }

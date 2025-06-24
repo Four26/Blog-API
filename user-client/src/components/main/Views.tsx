@@ -23,7 +23,7 @@ interface Comments {
     }
 }
 
-const Views = () => {
+const Views = (): React.JSX.Element => {
 
     const [view, setView] = useState<BlogData | null>(null);
     const [comments, setComments] = useState<Comments[] | null>(null);
@@ -34,12 +34,12 @@ const Views = () => {
     const location = useLocation();
     const viewLocation = location.state;
 
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
         const textareaValue = e.target.value;
         dispatch(setTextArea(textareaValue));
     }
 
-    const handlePostComment = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handlePostComment = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
 
         const result = await dispatch(postComment({ id: viewLocation.id, comment: commentText.trim() }));
@@ -59,7 +59,7 @@ const Views = () => {
     useEffect(() => {
         setView(viewLocation);
 
-        const fetchComments = async () => {
+        const fetchComments = async (): Promise<void> => {
             const data = await getComments(viewLocation.id);
             setComments(data);
         };

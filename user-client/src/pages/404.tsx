@@ -1,6 +1,6 @@
 import { TbError404 } from "react-icons/tb";
 import { PiSmileySadDuotone } from "react-icons/pi";
-const PageNotFound = () => {
+const PageNotFound = (): React.JSX.Element => {
     return (
         <div className=" flex flex-col items-center justify-center h-screen">
             <PiSmileySadDuotone
@@ -14,4 +14,4 @@ const PageNotFound = () => {
     )
 }
 
-export default PageNotFound
+export default PageNotFound;

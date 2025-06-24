@@ -30,7 +30,7 @@ interface UserPosts {
 }
 
 
-const Main = () => {
+const Main = (): React.JSX.Element => {
 
     const [posts, setPosts] = useState<Post[]>();
     const [userPosts, setUserPosts] = useState<UserPosts[] | null>(null);
@@ -38,12 +38,12 @@ const Main = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchPosts = async () => {
+        const fetchPosts = async (): Promise<void> => {
             const posts = await getPosts();
             setPosts(posts);
         }
 
-        const fetchUserPosts = async () => {
+        const fetchUserPosts = async (): Promise<void> => {
             const userPosts = await getUserPosts();
             console.log(userPosts)
             setUserPosts(userPosts);
@@ -53,7 +53,7 @@ const Main = () => {
         fetchUserPosts();
     }, []);
 
-    const handleView = (blog: Post) => {
+    const handleView = (blog: Post): void => {
         navigate(`/views/${blog.id}`, { state: blog })
     }
 

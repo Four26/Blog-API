@@ -4,7 +4,8 @@ import { LuEye, LuEyeClosed } from "react-icons/lu";
 import { usePasswordToggle } from "../hooks/togglePassword";
 import { logIn, setField, UserData } from "../redux/slices/authSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
-const Login = () => {
+
+const Login = (): React.JSX.Element => {
     const { showPassword, handleShowPassword } = usePasswordToggle();
     const formData = useAppSelector((state) => state.auth.formData);
     const logInError = useAppSelector((state) => state.auth.logInError);
@@ -16,25 +17,25 @@ const Login = () => {
         { type: "password", name: "password", placeholder: "Password" },
     ];
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
 
         if (!formData.username || !formData.password) {
             alert("Please fill up all the fields");
             return;
-        };
+        }
 
         const result = await dispatch(logIn(formData));
 
         if (logIn.fulfilled.match(result)) {
             navigate("/user");
         }
-    }
+    };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const { name, value } = e.target;
         dispatch(setField({ name: name as keyof UserData, value }));
-    }
+    };
 
     return (
         <div className="flex flex-col h-screen justify-center items-center bg-gray-50">
@@ -64,4 +65,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Login;

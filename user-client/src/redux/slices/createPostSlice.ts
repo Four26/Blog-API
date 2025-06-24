@@ -22,7 +22,7 @@ const initialState: PostState = {
     error: ""
 }
 
-export const createPost = createAsyncThunk("createPost", async (blogData: BlogData, thunkAPI) => {
+export const createPost = createAsyncThunk<{ message: string }, BlogData, { rejectValue: string }>("createPost", async (blogData: BlogData, thunkAPI) => {
     try {
         const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/createPost`, {
             method: "POST",

@@ -4,13 +4,13 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks/hooks";
 import { BlogData, createPost, setField } from "../../redux/slices/createPostSlice";
 
 
-const CreateBlog = () => {
+const CreateBlog = (): React.JSX.Element => {
 
     const [successMessage, setSuccessMessage] = useState<string | null>(null)
     const blogData = useAppSelector((state) => state.createPost.blogData);
     const dispatch = useAppDispatch();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
         const { name, value, type } = e.target;
 
         if (type === "checkbox") {
@@ -20,7 +20,7 @@ const CreateBlog = () => {
             dispatch(setField({ name: name as keyof BlogData, value: value }));
         }
     }
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
 
         const cleanedData = {

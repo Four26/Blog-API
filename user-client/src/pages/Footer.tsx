@@ -1,6 +1,6 @@
 import { FaGithub } from "react-icons/fa";
 
-const Footer = () => {
+const Footer = (): React.JSX.Element => {
     return (
         <div className="p-4 border-t border-gray-300 dark:border-gray-700 flex flex-col items-center justify-center gap-2 text-gray-600 text-sm">
             <a

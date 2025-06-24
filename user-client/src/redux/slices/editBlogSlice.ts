@@ -26,7 +26,7 @@ const initialState: PostState = {
 }
 
 
-export const editBlog = createAsyncThunk("editBlog", async ({ id, blogData }: { id: number, blogData: BlogData }, thunkAPI) => {
+export const editBlog = createAsyncThunk<{ message: string }, { id: number, blogData: BlogData }, { rejectValue: string }>("editBlog", async ({ id, blogData }: { id: number, blogData: BlogData }, thunkAPI) => {
     try {
         const response = await fetch(`${URL}/editBlog${id}`, {
             method: "PUT",

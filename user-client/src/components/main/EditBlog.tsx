@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks/hooks";
 import { BlogData, setField } from "../../redux/slices/editBlogSlice";
 import { editBlog } from "../../redux/slices/editBlogSlice";
 
-const EditBlog = () => {
+const EditBlog = (): React.JSX.Element => {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const blogData = useAppSelector((state) => state.editBlog.blogData);
 
@@ -12,8 +12,7 @@ const EditBlog = () => {
     const location = useLocation();
     const editBlogLocation = location.state;
 
-    console.log(editBlogLocation);
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
         const { name, value, type } = e.target;
 
         if (type === "checkbox") {
@@ -24,7 +23,7 @@ const EditBlog = () => {
         }
     }
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
 
         const cleanedData = {
