@@ -71,4 +71,8 @@ model users {
   comments   comments[]
   post_like  post_like[]
   posts      posts[]
+
+  //New fields
+  googleId     String?     @unique
+  authProvider String?
 }

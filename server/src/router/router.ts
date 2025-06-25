@@ -12,6 +12,7 @@ import { postComment } from "../controller/postComment";
 import { getComment } from "../controller/getComment";
 import { getUserPosts } from "../controller/getUserPosts";
 import { deletePosts } from "../controller/deletePosts";
+import { googleLogIn, googleLogInCallback, googleSignUp } from "../controller/googleAuth";
 
 
 const router = express.Router();
@@ -21,12 +22,19 @@ router.post("/logIn", logIn);
 router.post("/logOut", logOut);
 router.post("/createPost", isAuthenticated, createPost);
 router.post("/postComment:id", isAuthenticated, postComment);
-router.put("/editBlog:id", isAuthenticated, editBlog)
+
+router.put("/editBlog:id", isAuthenticated, editBlog);
+
 router.get("/checkAuth", isAuthenticated, authenticate);
 router.get("/getPost", getPosts);
 router.get("/myBlogs", isAuthenticated, userBlogs);
 router.get("/getComments", isAuthenticated, getComment);
 router.get("/getUserPosts", isAuthenticated, getUserPosts);
+router.get("/auth/google/logIn", googleLogIn);
+router.get("/auth/google/signUp", googleSignUp);
+router.get("/auth/google/callback", googleLogInCallback);
+
+
 router.delete("/deletePost/:id", isAuthenticated, deletePosts);
 
 export default router;

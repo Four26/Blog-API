@@ -4,6 +4,9 @@ import { Request, Response } from "express";
 import { Strategy as LocalStrategy } from "passport-local"
 import expressAsyncHandler from "express-async-handler";
 import prisma from "../middleware/prisma";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 interface User {
     id: number;
@@ -37,6 +40,7 @@ passport.use(new LocalStrategy(async (username: string, password: string, done: 
         return done(error);
     }
 }));
+
 
 passport.serializeUser((user: any, done: any) => {
     done(null, user.id);

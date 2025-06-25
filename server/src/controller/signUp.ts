@@ -57,7 +57,9 @@ export const signUp = expressAsyncHandler(async (req: Request, res: Response): P
                     email: email,
                     password: hashedPassword,
                     created_at: new Date(),
-                    admin: false
+                    admin: false,
+                    authProvider: "local",
+                    googleId: null
                 }
             });
 
