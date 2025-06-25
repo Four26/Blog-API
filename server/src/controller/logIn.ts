@@ -1,9 +1,9 @@
 import bcryptjs from "bcryptjs";
 import passport from "passport";
+import { pool } from "../db/db";
 import { Request, Response } from "express";
 import { Strategy as LocalStrategy } from "passport-local"
 import expressAsyncHandler from "express-async-handler";
-import prisma from "../middleware/prisma";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -19,23 +19,19 @@ interface User {
 
 passport.use(new LocalStrategy(async (username: string, password: string, done: any) => {
     try {
-        const response = await prisma.users.findUnique({
-            where: {
-                username: username
-            }
-        });
 
-        if (!response) {
+        const checkUser = await pool.query(`SELECT id, username, password FROM users WHERE username = $1`, [username]);
+        if (!checkUser.rows.length) {
             return done(null, false, { message: "User not found! Please sign up first!" });
         }
 
-        const passwordMatch = await bcryptjs.compare(password, response.password);
+        const passwordMatch = await bcryptjs.compare(password, checkUser.rows[0].password);
 
         if (!passwordMatch) {
             return done(null, false, { message: "Incorrect password" });
         }
 
-        return done(null, response)
+        return done(null, checkUser.rows[0]);
     } catch (error) {
         return done(error);
     }
@@ -47,12 +43,8 @@ passport.serializeUser((user: any, done: any) => {
 });
 passport.deserializeUser(async (id: number, done: any) => {
     try {
-        const response = await prisma.users.findUnique({
-            where: {
-                id: id
-            }
-        });
-        return done(null, response);
+        const user = await pool.query(`SELECT * FROM users WHERE id = $1`, [id])
+        return done(null, user);
     } catch (error) {
         return done(error)
     }

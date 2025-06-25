@@ -1,8 +1,8 @@
 import z from "zod";
+import { pool } from "../db/db";
 import bcryptjs from "bcryptjs";
 import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
-import prisma from "../middleware/prisma";
 
 const validateSignUp = z.object({
     firstname: z.string().min(2, "First name must be atleast 2 characters long!"),
@@ -24,17 +24,8 @@ export const signUp = expressAsyncHandler(async (req: Request, res: Response): P
 
         const hashedPassword = await bcryptjs.hash(password, 10);
 
-        const checkDuplicateUsername = await prisma.users.findUnique({
-            where: {
-                username: username
-            }
-        });
-
-        const checkDuplicateEmail = await prisma.users.findUnique({
-            where: {
-                email: email
-            }
-        });
+        const checkDuplicateUsername = await pool.query(`SELECT * FROM users WHERE username = $1`, [username]);
+        const checkDuplicateEmail = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
 
         if (checkDuplicateUsername || checkDuplicateEmail) {
             const errors = [];
@@ -49,19 +40,7 @@ export const signUp = expressAsyncHandler(async (req: Request, res: Response): P
 
             res.status(409).json({ message: errors });
         } else {
-            const createUser = await prisma.users.create({
-                data: {
-                    firstname: firstname,
-                    lastname: lastname,
-                    username: username,
-                    email: email,
-                    password: hashedPassword,
-                    created_at: new Date(),
-                    admin: false,
-                    authProvider: "local",
-                    googleId: null
-                }
-            });
+            const createUser = await pool.query(`INSERT INTO users (firstname, lastname, username, email, password, created_at, admin, googleid, authprovider) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`, [firstname, lastname, username, email, hashedPassword, new Date(), false, null, "local"]);
 
             res.status(200).json({ message: "User created successfully!" });
         }

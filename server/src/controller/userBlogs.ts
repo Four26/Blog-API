@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
 import expressAsyncHandler from "express-async-handler";
 import prisma from "../middleware/prisma";
+import { pool } from "../db/db";
 
 interface User {
     id: number
@@ -11,18 +11,7 @@ export const userBlogs = expressAsyncHandler(async (req: Request, res: Response)
 
     const userId = (req.user as User).id;
 
-    const getUserBlogs = await prisma.posts.findMany({
-        where: {
-            author_id: userId
-        },
-        include: {
-            category: {
-                select: {
-                    name: true
-                }
-            }
-        }
-    });
+    const getUserBlogs = await pool.query("SELECT posts.*, category.name AS category_name FROM posts JOIN category ON posts.category_id = category.id WHERE posts.author_id = $1", [userId])
 
     res.status(200).json(getUserBlogs);
 });

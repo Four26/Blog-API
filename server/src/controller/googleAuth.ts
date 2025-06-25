@@ -1,7 +1,7 @@
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import passport from "passport";
-import prisma from "../middleware/prisma";
 import { NextFunction, Request, Response } from "express";
+import { pool } from "../db/db";
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID || '',
@@ -17,9 +17,9 @@ passport.use(new GoogleStrategy({
 
         if (!email) return cb(null, false, { message: "No email returned from Google" });
 
-        console.log(state);
+        const existingUser = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
 
-        const existingUser = await prisma.users.findUnique({ where: { email, googleId: profile.id, authProvider: "google" } });
+        // const existingUser = await prisma.users.findUnique({ where: { email, googleId: profile.id, authProvider: "google" } });
 
         if (state === "signUp") {
 
@@ -27,24 +27,23 @@ passport.use(new GoogleStrategy({
                 return cb(null, existingUser);
             }
 
-            const newUser = await prisma.users.create({
-                data: {
-                    email: profile.emails?.[0].value || "",
-                    username: profile.displayName || "",
-                    firstname: profile.name?.givenName || "",
-                    lastname: profile.name?.familyName || "",
-                    password: "",
-                    created_at: new Date(),
-                    admin: false,
-                    authProvider: "google",
-                    googleId: profile.id
-                }
-            });
+            const newUser = await pool.query(`INSERT INTO users (email, username, firstname, lastname, password, created_at, admin, authprovider, googleid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`, [
+                profile.emails?.[0].value,
+                profile.displayName,
+                profile.name?.givenName,
+                profile.name?.familyName,
+                "",
+                new Date(),
+                false,
+                "google",
+                profile.id
+            ]);
+
             return cb(null, newUser);
         }
 
         if (state === "logIn") {
-            if (existingUser && existingUser.authProvider === "google") {
+            if (existingUser && existingUser.rows[0].authprovider === "google") {
                 return cb(null, existingUser);
             } else {
                 return cb(null, false, { message: "No Google account registered. Please sign up first." });

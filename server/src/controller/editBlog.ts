@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
 import prisma from "../middleware/prisma";
+import { pool } from "../db/db";
 
 interface User {
     id: number
@@ -12,25 +13,19 @@ export const editBlog = expressAsyncHandler(async (req: Request, res: Response):
 
     const status = publish === false ? "draft" : "published";
 
-    const category_id = await prisma.category.findFirst({
-        where: {
-            name: category
-        }
-    });
+    const category_id = await pool.query(`SELECT * FROM category WHERE name = $1`, [category]);
 
-    const updatePost = await prisma.posts.update({
-        where: {
-            id: Number(req.params.id)
-        },
-        data: {
-            title: title,
-            content: content,
-            author_id: userId,
-            category_id: category_id?.id,
-            status: status,
-            updated_at: new Date()
-        }
-    });
+    const updatePosts = await pool.query(
+        `UPDATE posts
+            SET title = $1,
+                content = $2,
+                author_id = $3,
+                category_id = $4,
+                status = $5,
+                updated_at = $6
+            WHERE id = $7`,
+        [title, content, userId, category_id.rows[0].id, status, new Date(), Number(req.params.id)]
+    );
 
     res.status(200).json({ message: "Your blog is successfully save!" });
 });
