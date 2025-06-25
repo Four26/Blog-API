@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
+import { FcGoogle } from "react-icons/fc";
 import { usePasswordToggle } from "../hooks/togglePassword";
 import { setField, signUp, UserData } from "../redux/slices/signUpSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
@@ -45,6 +46,11 @@ const Signup = (): React.JSX.Element => {
         { type: "password", name: "confirmPassword", placeholder: "Confirm Password" }
     ];
 
+    const handleGoogleLogIn = (): void => {
+        window.location.href = `${import.meta.env.VITE_SERVER_URL}/auth/google/signUp`
+    };
+
+
     return (
         <div className="flex flex-col h-screen justify-center items-center bg-gray-50">
             <form
@@ -61,7 +67,7 @@ const Signup = (): React.JSX.Element => {
                             key={name}
                             className="block text-sm"
                         >
-                            {placeholder}:
+                            {placeholder}
                             <div className="relative">
                                 <input
                                     key={name}
@@ -89,8 +95,24 @@ const Signup = (): React.JSX.Element => {
                         </label>
                     )
                 })}
-                <p className="text-sm text-gray-600 mt-2 mb-2">Already have an account? <Link className="text-blue-600 hover:text-blue-700 hover:underline transition-colors" to="/login">Login</Link></p>
-                <button className="border py-2 border-gray-400 cursor-pointer rounded hover:bg-blue-500 hover:border-0 hover:text-white transition-colors duration-500 ease-in-out">Sign Up</button>
+                <button className="border mt-5 py-2 border-gray-400 cursor-pointer rounded hover:bg-blue-500 hover:border-0 hover:text-white transition-colors duration-500 ease-in-out">Sign Up</button>
+
+                <div className="separator w-full flex items-center justify-center gap-3 my-5">
+                    <div className="w-full border border-gray-700"></div>
+                    <span className="text-gray-700">OR</span>
+                    <div className="w-full border border-gray-700"></div>
+                </div>
+
+                <div className="flex items-center justify-center">
+                    <button
+                        type="button"
+                        onClick={handleGoogleLogIn}
+                        className="w-full py-2 flex items-center justify-center gap-2 rounded border border-gray-400 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-500 ease-in-out">
+                        <span><FcGoogle size={25} /></span>Sign up with Google
+                    </button>
+                </div>
+                <p className="text-sm text-center text-gray-600 mt-4">Already have an account? <Link className="text-blue-600 hover:text-blue-700 hover:underline transition-colors" to="/login">Login</Link></p>
+
             </form>
         </div>
     )
