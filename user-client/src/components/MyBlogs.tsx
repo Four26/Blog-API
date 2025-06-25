@@ -6,9 +6,7 @@ import { deletePost } from "../api/deletePost";
 interface Blog {
     id: number
     title: string
-    category: {
-        name: string
-    }
+    category_name: string
     status: string
     content: string
     created_at: number
@@ -63,7 +61,7 @@ const MyBlogs = (): React.JSX.Element => {
                     className="border border-gray-400 p-3 rounded"
                 >
                     <div className="flex justify-between items-center">
-                        <h1>{blog.category.name}</h1>
+                        <h1>{blog.category_name}</h1>
 
                         <p
                             className={blog.status === "published" ? "text-green-800 bg-green-300 rounded-full px-2 py-1 text-xs" : "text-yellow-800 bg-yellow-300 rounded-full px-2 py-1 text-xs"}
@@ -121,7 +119,7 @@ const MyBlogs = (): React.JSX.Element => {
                             </td>
                             <td className="px-2 py-2 text-sm">
                                 <span className="text-blue-500">
-                                    {blog.category.name}
+                                    {blog.category_name}
 
                                 </span>
                             </td>

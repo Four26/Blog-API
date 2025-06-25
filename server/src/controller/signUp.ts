@@ -27,14 +27,14 @@ export const signUp = expressAsyncHandler(async (req: Request, res: Response): P
         const checkDuplicateUsername = await pool.query(`SELECT * FROM users WHERE username = $1`, [username]);
         const checkDuplicateEmail = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
 
-        if (checkDuplicateUsername || checkDuplicateEmail) {
+        if (checkDuplicateUsername.rows.length > 0 || checkDuplicateEmail.rows.length > 0) {
             const errors = [];
 
-            if (checkDuplicateUsername) {
+            if (checkDuplicateUsername.rows.length > 0) {
                 errors.push({ field: "username", message: "Username already exists!" });
             }
 
-            if (checkDuplicateEmail) {
+            if (checkDuplicateEmail.rows.length > 0) {
                 errors.push({ field: "email", message: "Email already exists!" });
             }
 

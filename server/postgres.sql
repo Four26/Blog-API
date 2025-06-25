@@ -5,8 +5,8 @@ CREATE TABLE users (
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
     password VARCHAR(512) NOT NULL,
-    googleId VARCHAR(255) UNIQUE, 
-    authProvider VARCHAR(255),
+    googleid VARCHAR(255) UNIQUE, 
+    authprovider VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     admin BOOLEAN DEFAULT FALSE
 );

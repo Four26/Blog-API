@@ -13,5 +13,5 @@ export const userBlogs = expressAsyncHandler(async (req: Request, res: Response)
 
     const getUserBlogs = await pool.query("SELECT posts.*, category.name AS category_name FROM posts JOIN category ON posts.category_id = category.id WHERE posts.author_id = $1", [userId])
 
-    res.status(200).json(getUserBlogs);
+    res.status(200).json(getUserBlogs.rows);
 });

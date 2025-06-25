@@ -21,6 +21,6 @@ export const getPosts = expressAsyncHandler(async (req: Request, res: Response):
         WHERE posts.status = 'published'
         ORDER BY posts.created_at DESC`);
 
-    res.status(200).json(getPosts);
+    res.status(200).json(getPosts.rows);
 });
 

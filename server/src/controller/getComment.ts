@@ -18,5 +18,5 @@ export const getComment = expressAsyncHandler(async (req: Request, res: Response
                                 ORDER BY comments.created_at DESC
             `, [postId]);
 
-    res.status(200).json(fetchComment);
+    res.status(200).json(fetchComment.rows);
 });

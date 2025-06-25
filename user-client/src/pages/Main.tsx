@@ -4,25 +4,15 @@ import { getPosts } from "../api/getPosts";
 import { useAppSelector } from "../redux/hooks/hooks";
 import { getUserPosts } from "../api/getUserPosts";
 
-interface User {
-    firstname: string
-    lastname: string
-}
-
-interface Category {
-    id: number
-    name: string
-    created_at: Date
-}
-
 interface Post {
     id: number
     title: string
     content: string
     status: string
     created_at: number
-    category: Category
-    users: User
+    category_name: string
+    firstname: string
+    lastname: string
 }
 
 interface UserPosts {
@@ -81,13 +71,13 @@ const Main = (): React.JSX.Element => {
                         >
                             <h3
                                 className="uppercase text-l text-blue-500"
-                            >{post.category.name}</h3>
+                            >{post.category_name}</h3>
                             <h4
                                 className="underline text-xl text-[#333333] dark:text-gray-300"
                             >{post.title}</h4>
                             <p
                                 className="text-gray-500"
-                            >By {post.users.firstname} {post.users.lastname} &#124; <span>{post.created_at ? new Date(post.created_at).toLocaleDateString("en-US", {
+                            >By {post.firstname} {post.lastname} &#124; <span>{post.created_at ? new Date(post.created_at).toLocaleDateString("en-US", {
                                 month: "long",
                                 day: "numeric",
                                 year: "numeric"
