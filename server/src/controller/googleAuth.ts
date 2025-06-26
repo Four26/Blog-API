@@ -71,6 +71,14 @@ export const googleLogInCallback = async (req: Request, res: Response, next: Nex
 
             const state = req.query.state;
 
+
+            res.cookie("connect.sid", req.sessionID, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "none",
+                maxAge: 24 * 60 * 60 * 1000
+            });
+
             if (state === "signUp") {
                 return res.redirect(`${process.env.CLIENT_URL}/logIn`);
             } else if (state === "logIn") {
