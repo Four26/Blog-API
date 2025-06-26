@@ -71,7 +71,7 @@ export const googleLogInCallback = async (req: Request, res: Response, next: Nex
 
             const state = req.query.state;
 
-
+            //Set cookie
             res.cookie("connect.sid", req.sessionID, {
                 httpOnly: true,
                 secure: true,
