@@ -49,7 +49,7 @@ const EditBlog = (): React.JSX.Element => {
         if (editBlogLocation) {
             dispatch(setField({ name: "title", value: editBlogLocation.title }));
             dispatch(setField({ name: "content", value: editBlogLocation.content }));
-            dispatch(setField({ name: "category", value: editBlogLocation.category.name }));
+            dispatch(setField({ name: "category", value: editBlogLocation.category_name }));
             dispatch(setField({ name: "publish", value: editBlogLocation.status === "published" }));
         }
 

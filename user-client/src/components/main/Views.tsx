@@ -8,19 +8,16 @@ import { postComment, setTextArea } from "../../redux/slices/postCommentSlice";
 interface BlogData {
     title: string
     content: string
-    category: {
-        name: string
-    }
+    category_name: string
 }
 
 interface Comments {
     id: number
     comments: string
     created_at: number
-    users: {
-        firstname: string
-        lastname: string
-    }
+    firstname: string
+    lastname: string
+
 }
 
 const Views = (): React.JSX.Element => {
@@ -76,7 +73,7 @@ const Views = (): React.JSX.Element => {
                 )}
                 {view && (
                     <div className="p-5 mt-5 bg-white rounded sm:w-[700px] dark:bg-dark dark:border dark:border-gray-600">
-                        <h1 className="text-blue-500 uppercase">{view.category.name}</h1>
+                        <h1 className="text-blue-500 uppercase">{view.category_name}</h1>
                         <h2 className="mt-10 mb-5 text-2xl">{view.title}</h2>
                         <div className="leading-relaxed">{view.content.split("\n").map((paragraph, index) => paragraph.trim() && (
                             <p
@@ -122,11 +119,11 @@ const Views = (): React.JSX.Element => {
                             >
                                 <div className="comment-profile py-2 px-3 bg-amber-300 rounded-full">
                                     <p
-                                        className="dark:text-black">{comment.users.firstname.charAt(0).toUpperCase()}{comment.users.lastname.charAt(0).toUpperCase()}
+                                        className="dark:text-black">{comment.firstname.charAt(0).toUpperCase()}{comment.lastname.charAt(0).toUpperCase()}
                                     </p>
                                 </div>
                                 <div className="comment w-full p-2 bg-gray-100 rounded">
-                                    <p className="font-semibold dark:text-black">{comment.users.firstname} {comment.users.lastname}
+                                    <p className="font-semibold dark:text-black">{comment.firstname} {comment.lastname}
                                     </p>
                                     <p className="text-gray-600 text-sm">{comment.comments}</p>
                                 </div>

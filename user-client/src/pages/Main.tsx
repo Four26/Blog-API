@@ -35,7 +35,6 @@ const Main = (): React.JSX.Element => {
 
         const fetchUserPosts = async (): Promise<void> => {
             const userPosts = await getUserPosts();
-            console.log(userPosts)
             setUserPosts(userPosts);
         }
 

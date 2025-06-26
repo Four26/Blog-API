@@ -10,7 +10,6 @@ passport.use(new GoogleStrategy({
     passReqToCallback: true
 }, async (req: Request, accessToken, refreshToken, profile, cb) => {
 
-
     try {
         const email = profile.emails?.[0].value;
         const state = req.query.state;
@@ -19,12 +18,10 @@ passport.use(new GoogleStrategy({
 
         const existingUser = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
 
-        // const existingUser = await prisma.users.findUnique({ where: { email, googleId: profile.id, authProvider: "google" } });
-
         if (state === "signUp") {
 
-            if (existingUser) {
-                return cb(null, existingUser);
+            if (existingUser.rows.length > 0) {
+                return cb(null, existingUser.rows[0]);
             }
 
             const newUser = await pool.query(`INSERT INTO users (email, username, firstname, lastname, password, created_at, admin, authprovider, googleid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`, [
@@ -43,8 +40,8 @@ passport.use(new GoogleStrategy({
         }
 
         if (state === "logIn") {
-            if (existingUser && existingUser.rows[0].authprovider === "google") {
-                return cb(null, existingUser);
+            if (existingUser.rows.length > 0 && existingUser.rows[0].authprovider === "google") {
+                return cb(null, existingUser.rows[0]);
             } else {
                 return cb(null, false, { message: "No Google account registered. Please sign up first." });
             }
@@ -70,7 +67,16 @@ export const googleLogInCallback = async (req: Request, res: Response, next: Nex
 
         req.logIn(user, (error) => {
             if (err) return next(err);
-            return res.redirect(`${process.env.CLIENT_URL}/user`);
-        })
-    })(req, res);
+
+            const state = req.query.state;
+
+            if (state === "signUp") {
+                return res.redirect(`${process.env.CLIENT_URL}/logIn`);
+            } else if (state === "logIn") {
+                return res.redirect(`${process.env.CLIENT_URL}/user`);
+            } else {
+                return res.redirect(`${process.env.CLIENT_URL}/logIn?error=${encodeURIComponent(info.message || "Authentication failed!")}`);
+            }
+        });
+    })(req, res, next);
 }
