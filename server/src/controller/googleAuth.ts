@@ -37,7 +37,7 @@ passport.use(new GoogleStrategy({
                 profile.id
             ]);
 
-            return cb(null, newUser);
+            return cb(null, newUser.rows[0]);
         }
 
         if (state === "logIn") {
@@ -67,7 +67,7 @@ export const googleLogInCallback = async (req: Request, res: Response, next: Nex
         }
 
         req.logIn(user, (error) => {
-            if (err) return next(error);
+            if (error) return next(error);
 
             const state = req.query.state;
 
