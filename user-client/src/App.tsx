@@ -10,10 +10,18 @@ import CreateBlog from "./components/main/CreateBlog";
 import MyBlogs from "./components/MyBlogs";
 import EditBlog from "./components/main/EditBlog";
 import Views from "./components/main/Views";
+import { useAppDispatch } from "./redux/hooks/hooks";
+import { useEffect } from "react";
+import { checkAuth } from "./redux/slices/authSlice";
 
 
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(checkAuth())
+  }, [dispatch])
 
   return (
     <BrowserRouter>

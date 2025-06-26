@@ -1,28 +1,12 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-import { useAppDispatch } from "../redux/hooks/hooks";
-import { checkAuth } from "../redux/slices/authSlice";
+import { useAppSelector } from "../redux/hooks/hooks";
 
 export const Authenticated = ({ children }: { children: ReactNode }): React.JSX.Element => {
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-    const dispatch = useAppDispatch();
+    const { isAuthenticated, hasCheckedAuth } = useAppSelector((state) => state.auth);
 
-    useEffect(() => {
-        const verifyAuth = async () => {
-            const resultAction = await dispatch(checkAuth());
-
-            if (checkAuth.fulfilled.match(resultAction)) {
-                setIsAuthenticated(true);
-            } else {
-                setIsAuthenticated(false);
-            }
-        };
-        verifyAuth();
-    }, [dispatch]);
-
-    if (isAuthenticated === null) {
+    if (!hasCheckedAuth) {
         return <div>Loading...</div>;
     }
-
     return isAuthenticated ? <>{children}</> : <Navigate to="/" replace />
 }

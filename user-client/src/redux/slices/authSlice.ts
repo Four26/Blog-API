@@ -11,6 +11,7 @@ interface logInState {
     isLoading: boolean
     logInError: string | null
     isAuthenticated: boolean
+    hasCheckedAuth: boolean
 }
 
 const initialState: logInState = {
@@ -21,7 +22,8 @@ const initialState: logInState = {
     currentUser: "",
     isLoading: false,
     logInError: null,
-    isAuthenticated: false
+    isAuthenticated: false,
+    hasCheckedAuth: false
 }
 
 export const logIn = createAsyncThunk<string, UserData, { rejectValue: string }>("auth/logIn", async (formData: UserData, thunkAPI) => {
@@ -95,6 +97,7 @@ const authSlice = createSlice({
                 state.currentUser = action.payload;
                 state.isLoading = false;
                 state.logInError = null;
+                state.isAuthenticated = true;
 
             })
             .addCase(logIn.rejected, (state, action) => {
@@ -125,10 +128,12 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.isAuthenticated = true;
                 state.currentUser = action.payload;
+                state.hasCheckedAuth = true; // ✅
             })
             .addCase(checkAuth.rejected, (state) => {
                 state.isLoading = false;
                 state.isAuthenticated = false;
+                state.hasCheckedAuth = true; // ✅
             })
     }
 });
