@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
-import prisma from "../middleware/prisma";
 import { pool } from "../db/db";
 
 
