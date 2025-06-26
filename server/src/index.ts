@@ -24,7 +24,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.set('trust proxy', 1);
+app.set('trust proxy', 2);
 
 app.use(session({
     store: new (connectPgSimple(session))({
