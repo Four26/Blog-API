@@ -9,6 +9,7 @@ passport.use(new GoogleStrategy({
     callbackURL: `${process.env.SERVER_URL}/auth/google/callback`,
     passReqToCallback: true
 }, async (req: Request, accessToken, refreshToken, profile, cb) => {
+    console.log(process.env.SERVER_URL);
 
     try {
         const email = profile.emails?.[0].value;
@@ -66,7 +67,7 @@ export const googleLogInCallback = async (req: Request, res: Response, next: Nex
         }
 
         req.logIn(user, (error) => {
-            if (err) return next(err);
+            if (err) return next(error);
 
             const state = req.query.state;
 
