@@ -11,7 +11,7 @@ import { errorHandler } from "./middleware/errorHandler";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT
-const allowedOrigins = process.env.CLIENT_URL;
+const allowedOrigins = [process.env.CLIENT_URL];
 
 
 app.use(cors({
