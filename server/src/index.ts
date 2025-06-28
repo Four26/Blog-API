@@ -49,6 +49,7 @@ app.use(session({
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
         secure: isProd,
+        partitioned: isProd,
         sameSite: isProd ? "none" : "lax"
     }
 }));
