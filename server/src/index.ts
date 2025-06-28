@@ -16,10 +16,7 @@ const allowedOrigins = process.env.CLIENT_URL;
 
 app.use(cors({
     origin: function (origin, callback) {
-        if (!origin) return callback(null, true);
-
-        if (allowedOrigins?.includes(origin)) return callback(null, true);
-
+        if (!origin || allowedOrigins?.includes(origin)) return callback(null, true);
         return callback(new Error("Not allowed by CORS"));
     },
     methods: ["GET", "POST", "DELETE", "PUT"],
@@ -49,7 +46,6 @@ app.use(session({
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
         secure: isProd,
-        partitioned: isProd,
         sameSite: isProd ? "none" : "lax"
     }
 }));
