@@ -48,11 +48,11 @@ const Navbar = (): React.JSX.Element => {
                         <div className="flex justify-between items-center gap-5">
                             <Link
                                 to="/login"
-                                className="border border-gray-400 px-4 py-1 rounded-md hover:bg-green-500 hover:outline-none hover:border-gray-50 hover:text-white transition-all duration-300 ease-in-out"
+                                className="border border-gray-400 px-4 py-1 text-xs sm:text-base rounded-md hover:bg-green-500 hover:outline-none hover:border-gray-50 hover:text-white transition-all duration-300 ease-in-out"
                             > Login</Link>
                             <Link
                                 to="/signup"
-                                className="border border-gray-400 px-4 py-1 rounded-md hover:bg-blue-500 hover:outline-none hover:border-gray-50 hover:text-white transition-all duration-300 ease-in-out"
+                                className="border border-gray-400 px-4 py-1 text-xs sm:text-base rounded-md hover:bg-blue-500 hover:outline-none hover:border-gray-50 hover:text-white transition-all duration-300 ease-in-out"
                             > Sign Up</Link>
                         </div>
                     )}

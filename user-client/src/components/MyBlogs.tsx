@@ -174,7 +174,7 @@ const MyBlogs = (): React.JSX.Element => {
                 </div>
 
                 <div>
-                    <div className="filter-tab py-2 mt-10 flex justify-start items-center gap-5 border-b border-gray-400">
+                    <div className="filter-tab py-2 mt-10 flex justify-start items-start gap-5 border-b border-gray-400">
                         <button
                             onClick={() => setActiveTab("all")}
                             className="cursor-pointer">All Blogs ({blogs.length})</button>
