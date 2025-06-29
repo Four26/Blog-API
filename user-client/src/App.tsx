@@ -27,7 +27,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainLayout />} >
-          <Route index element={<Home />} />
+          <Route index element={<Authenticated redirectedIfAuthenticated redirectedTo="/user"><Home /></Authenticated>} />
           <Route path="/user" element={<Authenticated> <Main /></Authenticated>} />
           <Route path="/post" element={<Authenticated><CreateBlog /></Authenticated>} />
           <Route path="/myposts" element={<Authenticated><MyBlogs /></Authenticated>} />

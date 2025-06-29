@@ -2,6 +2,8 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import passport from "passport";
 import { NextFunction, Request, Response } from "express";
 import { pool } from "../db/db";
+import jwt from "jsonwebtoken";
+import { jwtSecret } from "./logIn";
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID || '',
@@ -63,21 +65,29 @@ export const googleLogInCallback = async (req: Request, res: Response, next: Nex
 
         if (!user) {
             return res.redirect(`${process.env.CLIENT_URL}/logIn?error=${encodeURIComponent(info.message || "Authentication failed!")}`)
-
         }
 
-        req.logIn(user, (error) => {
-            if (error) return next(error);
+        if (!jwtSecret) {
+            return res.status(500).send("JWT secret is missing.");
+        }
 
-            const state = req.query.state;
+        const token = jwt.sign({ id: user.id, username: user.username }, jwtSecret, { expiresIn: "1d" });
 
-            if (state === "signUp") {
-                return res.redirect(`${process.env.CLIENT_URL}/logIn`);
-            } else if (state === "logIn") {
-                return res.redirect(`${process.env.CLIENT_URL}/user`);
-            } else {
-                return res.redirect(`${process.env.CLIENT_URL}/logIn?error=${encodeURIComponent(info.message || "Authentication failed!")}`);
-            }
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            maxAge: 24 * 60 * 60 * 1000
         });
+
+        const state = req.query.state;
+        if (state === "signUp") {
+            return res.redirect(`${process.env.CLIENT_URL}/logIn`);
+        } else if (state === "logIn") {
+            return res.redirect(`${process.env.CLIENT_URL}/user`);
+        } else {
+            return res.redirect(`${process.env.CLIENT_URL}/logIn?error=${encodeURIComponent("Unknown login state")}`);
+        }
+
     })(req, res, next);
 }
